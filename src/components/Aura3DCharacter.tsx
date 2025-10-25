@@ -14,34 +14,35 @@ const AuraFoxModel = ({ isWaving, onHover }: { isWaving: boolean; onHover: (hove
   const [hovered, setHovered] = useState(false);
   const texture = useLoader(THREE.TextureLoader, auraFoxAvatar);
   
-  // Animación de respiración, saludo y hover
+  // Animaciones expresivas: respiración, saludo y movimiento idle
   useFrame((state) => {
     if (!meshRef.current) return;
     
     const time = state.clock.getElapsedTime();
     
-    // Breathing animation (sutil)
-    const breathScale = 1 + Math.sin(time * 2) * 0.02;
-    meshRef.current.scale.set(1, breathScale, 1);
+    // Breathing animation - más notoria
+    const breathScale = 1 + Math.sin(time * 2) * 0.05;
+    meshRef.current.scale.set(breathScale, breathScale, 1);
     
-    // Idle rotation
-    if (!isWaving) {
-      meshRef.current.rotation.y = Math.sin(time * 0.5) * 0.1;
-    }
-    
-    // Wave animation - rotación más pronunciada
+    // Wave animation - movimiento completo de saludo
     if (isWaving) {
-      const waveRotation = Math.sin(time * 8) * 0.15;
-      meshRef.current.rotation.z = waveRotation;
+      const waveIntensity = Math.sin(time * 6) * 0.3;
+      meshRef.current.rotation.z = waveIntensity;
+      // Movimiento vertical durante el saludo
+      meshRef.current.position.y = Math.abs(Math.sin(time * 6)) * 0.15;
+      // Ligera rotación en Y para dar más vida
+      meshRef.current.rotation.y = Math.sin(time * 3) * 0.1;
     } else {
-      meshRef.current.rotation.z = 0;
-    }
-    
-    // Hover bounce
-    if (hovered) {
-      meshRef.current.position.y = Math.sin(time * 3) * 0.1;
-    } else {
-      meshRef.current.position.y = 0;
+      // Idle animation - movimiento sutil de cabeza
+      meshRef.current.rotation.z = Math.sin(time * 1.5) * 0.05;
+      meshRef.current.rotation.y = Math.sin(time * 0.8) * 0.08;
+      
+      // Hover bounce - más pronunciado
+      if (hovered) {
+        meshRef.current.position.y = Math.sin(time * 4) * 0.15;
+      } else {
+        meshRef.current.position.y = Math.sin(time * 1.2) * 0.03;
+      }
     }
   });
 
@@ -57,13 +58,15 @@ const AuraFoxModel = ({ isWaving, onHover }: { isWaving: boolean; onHover: (hove
         onHover(false);
       }}
     >
-      <planeGeometry args={[2.5, 2.5]} />
+      <planeGeometry args={[2.8, 2.8]} />
       <meshStandardMaterial 
         map={texture} 
         transparent={true}
         side={THREE.DoubleSide}
-        metalness={0.2}
-        roughness={0.8}
+        metalness={0.3}
+        roughness={0.7}
+        emissive="#FFE5CC"
+        emissiveIntensity={0.2}
       />
     </mesh>
   );
@@ -73,11 +76,11 @@ const Aura3DCharacter = ({ onClick }: Character3DProps) => {
   const [isWaving, setIsWaving] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
 
-  // Animación de saludo inicial
+  // Animación de saludo inicial - más larga para que sea notoria
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsWaving(false);
-    }, 3000);
+    }, 4000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -86,8 +89,8 @@ const Aura3DCharacter = ({ onClick }: Character3DProps) => {
   useEffect(() => {
     const interval = setInterval(() => {
       setIsWaving(true);
-      setTimeout(() => setIsWaving(false), 2000);
-    }, 30000);
+      setTimeout(() => setIsWaving(false), 3000);
+    }, 25000);
 
     return () => clearInterval(interval);
   }, []);
