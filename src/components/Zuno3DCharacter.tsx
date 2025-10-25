@@ -8,7 +8,7 @@ interface Character3DProps {
 }
 
 // Componente emoji 3D del zorro 🦊 - ZUNO v2 (único avatar permitido)
-const ZunoFoxEmoji3D = ({ isWaving, onHover }: { isWaving: boolean; onHover: (hover: boolean) => void }) => {
+export const ZunoFoxEmoji3D = ({ isWaving, onHover }: { isWaving: boolean; onHover: (hover: boolean) => void }) => {
   const groupRef = useRef<THREE.Group>(null);
   const headRef = useRef<THREE.Group>(null);
   const leftEyeRef = useRef<THREE.Group>(null);
@@ -18,21 +18,29 @@ const ZunoFoxEmoji3D = ({ isWaving, onHover }: { isWaving: boolean; onHover: (ho
   const [isWinking, setIsWinking] = useState(false);
   const blinkTimerRef = useRef<number>(0);
   
-  // Log de verificación - confirmación del avatar activo
+  // Log de verificación - confirmación del avatar activo y limpieza de cachés
   useEffect(() => {
     console.log("✅ Avatar activo: 🦊 Zuno v2 (Emoji 3D)");
-    console.log("📦 Asset ID: ZunoFoxEmoji3D - Modelo 3D procedural");
+    console.log("📦 Asset ID: ZunoFoxEmoji3D_v2 - Modelo 3D procedural (sin URL)");
     console.log("🚫 Cache desactivado - No fallback al avatar anterior");
     
-    // Limpiar localStorage de avatares anteriores
+    // Limpiar localStorage/sessionStorage de avatares anteriores
     const keysToRemove = ['avatar', 'assistantAvatar', 'assetVersion', 'emojiFox', 'auraAvatar'];
     keysToRemove.forEach(key => {
-      localStorage.removeItem(key);
-      sessionStorage.removeItem(key);
+      try { localStorage.removeItem(key); } catch {}
+      try { sessionStorage.removeItem(key); } catch {}
     });
     
+    // Limpiar caches y desregistrar service workers si existen
+    if ('caches' in window) {
+      caches.keys().then(keys => keys.forEach(k => caches.delete(k))).catch(() => {});
+    }
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(r => r.unregister())).catch(() => {});
+    }
+
     // Establecer nuevo avatar en storage
-    localStorage.setItem('currentAvatar', 'ZunoFoxEmoji3D_v2');
+    try { localStorage.setItem('currentAvatar', 'ZunoFoxEmoji3D_v2'); } catch {}
   }, []);
   
   // Sistema de parpadeo natural

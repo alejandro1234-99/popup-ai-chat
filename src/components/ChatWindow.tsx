@@ -4,7 +4,7 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import MessageBubble from "./MessageBubble";
 import { useToast } from "@/hooks/use-toast";
-import auraAvatar from "@/assets/aura-avatar.png";
+import ZunoEmojiAvatar from "./ZunoEmojiAvatar";
 
 type Message = {
   role: "user" | "assistant";
@@ -31,6 +31,21 @@ const ChatWindow = ({ onClose }: ChatWindowProps) => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Mensaje de confirmación del avatar activo, una sola vez
+  const didInitRef = useRef(false);
+  useEffect(() => {
+    if (didInitRef.current) return;
+    didInitRef.current = true;
+    console.log("ChatWindow usando avatar: procedural://ZunoFoxEmoji3D_v2");
+    setMessages((prev) => [
+      ...prev,
+      {
+        role: "assistant",
+        content: "✅ Avatar actualizado a 🦊 Zuno v2 (sin caché)\nAsset: procedural://ZunoFoxEmoji3D_v2",
+      },
+    ]);
+  }, []);
 
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
@@ -155,7 +170,7 @@ const ChatWindow = ({ onClose }: ChatWindowProps) => {
       <div className="bg-gradient-to-r from-orange-500/10 to-amber-500/10 backdrop-blur-xl text-white p-5 flex items-center justify-between border-b border-white/10 shadow-[0_1px_20px_rgba(255,122,52,0.1)]">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(255,122,52,0.3),0_0_40px_rgba(255,122,52,0.15)] overflow-hidden bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm border border-orange-500/20">
-            <img src={auraAvatar} alt="Zuno" className="w-[110%] h-[110%] object-contain" />
+            <ZunoEmojiAvatar size={40} />
           </div>
           <div>
             <h3 className="font-semibold text-base text-white/95 tracking-wide">Zuno 🦊</h3>
@@ -176,7 +191,7 @@ const ChatWindow = ({ onClose }: ChatWindowProps) => {
         {messages.length === 0 && (
           <div className="text-center text-slate-400 py-12">
             <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 shadow-[0_0_30px_rgba(255,122,52,0.3),0_0_60px_rgba(255,122,52,0.15)] overflow-hidden bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm border border-orange-500/20">
-              <img src={auraAvatar} alt="Zuno" className="w-[110%] h-[110%] object-contain" />
+              <ZunoEmojiAvatar size={80} />
             </div>
             <p className="text-base font-medium text-white/95 mb-2">¡Hola! Soy Zuno 🦊</p>
             <p className="text-sm text-orange-200/70">Tu asistente inteligente</p>
@@ -189,7 +204,7 @@ const ChatWindow = ({ onClose }: ChatWindowProps) => {
         {isLoading && messages[messages.length - 1]?.role === "user" && (
           <div className="flex gap-3 items-start animate-fade-in">
             <div className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 shadow-[0_0_20px_rgba(255,122,52,0.3)] overflow-hidden bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm border border-orange-500/20">
-              <img src={auraAvatar} alt="Zuno" className="w-[110%] h-[110%] object-contain" />
+              <ZunoEmojiAvatar size={36} />
             </div>
             <div className="bg-gradient-to-r from-orange-500/10 to-amber-500/5 border border-orange-500/20 rounded-2xl rounded-tl-sm px-4 py-3 backdrop-blur-xl shadow-[0_2px_10px_rgba(255,122,52,0.1)]">
               <div className="flex gap-1.5">
