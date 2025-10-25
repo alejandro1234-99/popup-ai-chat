@@ -28,7 +28,7 @@ const ChatWidget = () => {
             <img 
               src={auraAvatar} 
               alt="AURA bot" 
-              className="w-[85%] h-[85%] object-contain animate-gentle-wave drop-shadow-[0_0_15px_rgba(96,165,250,0.6)] scale-x-[-1]"
+              className="w-[95%] h-[95%] object-contain animate-gentle-wave drop-shadow-[0_0_15px_rgba(96,165,250,0.6)] scale-x-[-1]"
             />
           </div>
         </button>
