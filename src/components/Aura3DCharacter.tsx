@@ -7,59 +7,89 @@ interface Character3DProps {
   onClick: () => void;
 }
 
-// Componente del zorro AURA construido con formas 3D
+// Componente de la cabeza de zorro AURA en estilo emoji 3D
 const AuraFoxModel = ({ isWaving, onHover }: { isWaving: boolean; onHover: (hover: boolean) => void }) => {
   const groupRef = useRef<THREE.Group>(null);
-  const rightArmRef = useRef<THREE.Group>(null);
+  const headRef = useRef<THREE.Group>(null);
+  const leftEyeRef = useRef<THREE.Group>(null);
+  const rightEyeRef = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState(false);
+  const [isBlinking, setIsBlinking] = useState(false);
+  const [isWinking, setIsWinking] = useState(false);
+  const blinkTimerRef = useRef<number>(0);
   
-  // Animaciones del personaje completo
+  // Sistema de parpadeo natural
+  useEffect(() => {
+    const blink = () => {
+      setIsBlinking(true);
+      setTimeout(() => setIsBlinking(false), 150);
+      
+      // Siguiente parpadeo en 2-5 segundos
+      const nextBlink = 2000 + Math.random() * 3000;
+      blinkTimerRef.current = window.setTimeout(blink, nextBlink);
+    };
+    
+    // Primer parpadeo después de 2 segundos
+    blinkTimerRef.current = window.setTimeout(blink, 2000);
+    
+    return () => {
+      if (blinkTimerRef.current) {
+        clearTimeout(blinkTimerRef.current);
+      }
+    };
+  }, []);
+  
+  // Animaciones de la cabeza
   useFrame((state) => {
-    if (!groupRef.current) return;
+    if (!groupRef.current || !headRef.current) return;
     
     const time = state.clock.getElapsedTime();
     
-    // Respiración suave y constante - sensación de vida
-    const breathScale = 1 + Math.sin(time * 1.2) * 0.015;
+    // Respiración suave - sensación de vida
+    const breathScale = 1 + Math.sin(time * 1.2) * 0.008;
     groupRef.current.scale.y = breathScale;
-    groupRef.current.scale.x = 1 + Math.sin(time * 1.2) * 0.008;
+    groupRef.current.scale.x = 1 + Math.sin(time * 1.2) * 0.005;
     
-    // Animación de saludo con el brazo - suave y natural
-    if (rightArmRef.current && isWaving) {
-      // Rotación del brazo saludando - movimiento fluido y elegante
-      const waveProgress = (Math.sin(time * 3) + 1) / 2; // 0 to 1, más lento
-      const easedWave = waveProgress * waveProgress * (3 - 2 * waveProgress); // smooth easing
-      // Reducido a ~25-30 grados (0.4-0.5 radianes)
-      const waveRotation = easedWave * 0.5 - 0.25;
-      rightArmRef.current.rotation.z = waveRotation;
+    // Animación de saludo inicial - movimiento sutil de cabeza
+    if (isWaving) {
+      // Inclinación suave de la cabeza
+      headRef.current.rotation.z = Math.sin(time * 3) * 0.12;
+      headRef.current.rotation.y = Math.sin(time * 2) * 0.08;
+      headRef.current.position.y = Math.sin(time * 3) * 0.04;
+    } else {
+      // Idle - movimientos muy sutiles
+      headRef.current.rotation.z = Math.sin(time * 0.5) * 0.02;
+      headRef.current.rotation.y = Math.sin(time * 0.6) * 0.03;
+      headRef.current.rotation.x = Math.sin(time * 0.7) * 0.015;
       
-      // Oscilación suave de la mano
-      rightArmRef.current.rotation.x = Math.sin(time * 5) * 0.08;
-      
-      // Balanceo muy sutil del cuerpo durante el saludo
-      groupRef.current.rotation.z = Math.sin(time * 3) * 0.02;
-      groupRef.current.position.y = Math.sin(time * 3) * 0.03;
-    } else if (rightArmRef.current) {
-      // Brazo en posición relajada
-      rightArmRef.current.rotation.z = -0.2;
-      rightArmRef.current.rotation.x = 0;
-      groupRef.current.rotation.z = 0;
-      
-      // Idle animation - balanceo muy sutil para dar vida
-      groupRef.current.rotation.y = Math.sin(time * 0.6) * 0.02;
-      
-      // Movimiento vertical suave por respiración
+      // Movimiento vertical suave
       if (hovered) {
-        groupRef.current.position.y = Math.sin(time * 2) * 0.04;
+        headRef.current.position.y = Math.sin(time * 2) * 0.03;
       } else {
-        groupRef.current.position.y = Math.sin(time * 1.2) * 0.012;
+        headRef.current.position.y = Math.sin(time * 1) * 0.01;
       }
     }
+    
+    // Animación de parpadeo
+    if (leftEyeRef.current && rightEyeRef.current) {
+      const blinkScale = isBlinking ? 0.1 : 1;
+      const winkScale = isWinking ? 0.1 : 1;
+      
+      leftEyeRef.current.scale.y = isWinking ? winkScale : blinkScale;
+      rightEyeRef.current.scale.y = blinkScale;
+    }
   });
+
+  // Interacción al hacer clic
+  const handleClick = () => {
+    setIsWinking(true);
+    setTimeout(() => setIsWinking(false), 300);
+  };
 
   return (
     <group
       ref={groupRef}
+      onClick={handleClick}
       onPointerOver={() => {
         setHovered(true);
         onHover(true);
@@ -69,288 +99,231 @@ const AuraFoxModel = ({ isWaving, onHover }: { isWaving: boolean; onHover: (hove
         onHover(false);
       }}
     >
-      {/* Cuerpo - forma redondeada más natural con textura suave */}
-      <mesh position={[0, -0.4, 0]}>
-        <capsuleGeometry args={[0.36, 0.48, 32, 32]} />
+      {/* Grupo de la cabeza - permite rotaciones independientes */}
+      <group ref={headRef} position={[0, 0, 0]}>
+      {/* Cabeza principal - esfera grande estilo emoji */}
+      <mesh position={[0, 0, 0]}>
+        <sphereGeometry args={[0.65, 64, 64]} />
         <meshStandardMaterial 
           color="#FF7A34" 
-          roughness={0.65} 
-          metalness={0.08}
+          roughness={0.4} 
+          metalness={0.15}
           emissive="#FF6B28"
-          emissiveIntensity={0.08}
-        />
-      </mesh>
-
-      {/* Pecho blanco - degradado suave */}
-      <mesh position={[0, -0.35, 0.32]}>
-        <sphereGeometry args={[0.24, 32, 32]} />
-        <meshStandardMaterial 
-          color="#FFF5E6" 
-          roughness={0.6} 
-          metalness={0.02}
-          emissive="#FFF5E6"
-          emissiveIntensity={0.02}
-        />
-      </mesh>
-
-      {/* Cabeza - esfera grande con proporciones equilibradas */}
-      <mesh position={[0, 0.32, 0]}>
-        <sphereGeometry args={[0.46, 64, 64]} />
-        <meshStandardMaterial 
-          color="#FF7A34" 
-          roughness={0.65} 
-          metalness={0.08}
-          emissive="#FF6B28"
-          emissiveIntensity={0.08}
-        />
-      </mesh>
-
-      {/* Hocico/cara blanca - suave y expresiva */}
-      <mesh position={[0, 0.14, 0.38]}>
-        <sphereGeometry args={[0.26, 32, 32]} />
-        <meshStandardMaterial 
-          color="#FFFBF0" 
-          roughness={0.55} 
-          metalness={0.03}
-          emissive="#FFFBF0"
-          emissiveIntensity={0.03}
-        />
-      </mesh>
-
-      {/* Nariz - brillante y expresiva */}
-      <mesh position={[0, 0.14, 0.62]}>
-        <sphereGeometry args={[0.08, 32, 32]} />
-        <meshStandardMaterial 
-          color="#2A2A2A" 
-          roughness={0.2} 
-          metalness={0.3}
-          emissive="#1a1a1a"
           emissiveIntensity={0.1}
         />
       </mesh>
 
-      {/* Ojo izquierdo - grande, brillante y lleno de vida */}
-      <mesh position={[-0.18, 0.4, 0.36]}>
-        <sphereGeometry args={[0.15, 32, 32]} />
+      {/* Marcas blancas en las mejillas - estilo emoji */}
+      <mesh position={[-0.35, -0.08, 0.45]}>
+        <sphereGeometry args={[0.18, 32, 32]} />
         <meshStandardMaterial 
-          color="#FFFFFF" 
-          roughness={0.05} 
-          metalness={0.1}
-          emissive="#FFFFFF"
-          emissiveIntensity={0.05}
-        />
-      </mesh>
-      {/* Pupila izquierda - profunda y expresiva */}
-      <mesh position={[-0.16, 0.4, 0.48]}>
-        <sphereGeometry args={[0.075, 32, 32]} />
-        <meshStandardMaterial 
-          color="#1A1A1A" 
-          roughness={0.02} 
-          metalness={0.5}
-          emissive="#0a0a0a"
-          emissiveIntensity={0.3}
-        />
-      </mesh>
-      {/* Brillo principal en ojo izquierdo - muy visible */}
-      <mesh position={[-0.14, 0.43, 0.53]}>
-        <sphereGeometry args={[0.035, 16, 16]} />
-        <meshStandardMaterial 
-          color="#FFFFFF" 
-          roughness={0} 
-          metalness={1}
-          emissive="#FFFFFF"
-          emissiveIntensity={1.2}
-        />
-      </mesh>
-      {/* Brillo secundario - reflejo de luz */}
-      <mesh position={[-0.18, 0.38, 0.52]}>
-        <sphereGeometry args={[0.018, 16, 16]} />
-        <meshStandardMaterial 
-          color="#FFFFFF" 
-          roughness={0} 
-          metalness={1}
-          emissive="#FFFFFF"
-          emissiveIntensity={0.8}
-        />
-      </mesh>
-
-      {/* Ojo derecho - grande, brillante y lleno de vida */}
-      <mesh position={[0.18, 0.4, 0.36]}>
-        <sphereGeometry args={[0.15, 32, 32]} />
-        <meshStandardMaterial 
-          color="#FFFFFF" 
-          roughness={0.05} 
-          metalness={0.1}
-          emissive="#FFFFFF"
-          emissiveIntensity={0.05}
-        />
-      </mesh>
-      {/* Pupila derecha - profunda y expresiva */}
-      <mesh position={[0.16, 0.4, 0.48]}>
-        <sphereGeometry args={[0.075, 32, 32]} />
-        <meshStandardMaterial 
-          color="#1A1A1A" 
-          roughness={0.02} 
-          metalness={0.5}
-          emissive="#0a0a0a"
-          emissiveIntensity={0.3}
-        />
-      </mesh>
-      {/* Brillo principal en ojo derecho - muy visible */}
-      <mesh position={[0.14, 0.43, 0.53]}>
-        <sphereGeometry args={[0.035, 16, 16]} />
-        <meshStandardMaterial 
-          color="#FFFFFF" 
-          roughness={0} 
-          metalness={1}
-          emissive="#FFFFFF"
-          emissiveIntensity={1.2}
-        />
-      </mesh>
-      {/* Brillo secundario - reflejo de luz */}
-      <mesh position={[0.18, 0.38, 0.52]}>
-        <sphereGeometry args={[0.018, 16, 16]} />
-        <meshStandardMaterial 
-          color="#FFFFFF" 
-          roughness={0} 
-          metalness={1}
-          emissive="#FFFFFF"
-          emissiveIntensity={0.8}
-        />
-      </mesh>
-
-      {/* Oreja izquierda - más suave */}
-      <mesh position={[-0.28, 0.68, 0]} rotation={[0, 0, -0.25]}>
-        <coneGeometry args={[0.16, 0.45, 32]} />
-        <meshStandardMaterial 
-          color="#FF8C42" 
-          roughness={0.7} 
-          metalness={0.05}
-          emissive="#FF8C42"
-          emissiveIntensity={0.05}
-        />
-      </mesh>
-      {/* Interior oreja izquierda */}
-      <mesh position={[-0.28, 0.68, 0.05]} rotation={[0, 0, -0.25]}>
-        <coneGeometry args={[0.11, 0.35, 32]} />
-        <meshStandardMaterial 
-          color="#FFB380" 
+          color="#FFFBF0" 
           roughness={0.5} 
-          metalness={0.02}
-        />
-      </mesh>
-
-      {/* Oreja derecha - más suave */}
-      <mesh position={[0.28, 0.68, 0]} rotation={[0, 0, 0.25]}>
-        <coneGeometry args={[0.16, 0.45, 32]} />
-        <meshStandardMaterial 
-          color="#FF8C42" 
-          roughness={0.7} 
           metalness={0.05}
-          emissive="#FF8C42"
+          emissive="#FFFBF0"
           emissiveIntensity={0.05}
         />
       </mesh>
-      {/* Interior oreja derecha */}
-      <mesh position={[0.28, 0.68, 0.05]} rotation={[0, 0, 0.25]}>
-        <coneGeometry args={[0.11, 0.35, 32]} />
+      <mesh position={[0.35, -0.08, 0.45]}>
+        <sphereGeometry args={[0.18, 32, 32]} />
         <meshStandardMaterial 
-          color="#FFB380" 
+          color="#FFFBF0" 
           roughness={0.5} 
-          metalness={0.02}
-        />
-      </mesh>
-
-      {/* Brazo izquierdo - más natural */}
-      <mesh position={[-0.42, -0.28, 0]} rotation={[0, 0, 0.25]}>
-        <capsuleGeometry args={[0.09, 0.38, 16, 32]} />
-        <meshStandardMaterial 
-          color="#FF8C42" 
-          roughness={0.7} 
           metalness={0.05}
-          emissive="#FF8C42"
+          emissive="#FFFBF0"
           emissiveIntensity={0.05}
         />
       </mesh>
-      {/* Mano izquierda */}
-      <mesh position={[-0.5, -0.6, 0]}>
-        <sphereGeometry args={[0.11, 32, 32]} />
+
+      {/* Hocico/cara - más prominente estilo emoji */}
+      <mesh position={[0, -0.15, 0.5]}>
+        <sphereGeometry args={[0.32, 32, 32]} />
         <meshStandardMaterial 
-          color="#FF8C42" 
-          roughness={0.7} 
-          metalness={0.05}
+          color="#FFFBF0" 
+          roughness={0.45} 
+          metalness={0.08}
+          emissive="#FFFBF0"
+          emissiveIntensity={0.06}
         />
       </mesh>
 
-      {/* Brazo derecho (el que saluda) - más fluido */}
-      <group ref={rightArmRef} position={[0.42, -0.18, 0]}>
-        <mesh rotation={[0, 0, -0.2]}>
-          <capsuleGeometry args={[0.09, 0.38, 16, 32]} />
+      {/* Nariz pequeña y brillante - estilo emoji */}
+      <mesh position={[0, -0.12, 0.8]}>
+        <sphereGeometry args={[0.07, 32, 32]} />
+        <meshStandardMaterial 
+          color="#2A2A2A" 
+          roughness={0.1} 
+          metalness={0.4}
+          emissive="#1a1a1a"
+          emissiveIntensity={0.15}
+        />
+      </mesh>
+
+      {/* Boca sonriente sutil */}
+      <mesh position={[0, -0.28, 0.7]} rotation={[0, 0, 0]}>
+        <torusGeometry args={[0.12, 0.02, 16, 32, Math.PI]} />
+        <meshStandardMaterial 
+          color="#3D3D3D" 
+          roughness={0.6} 
+          metalness={0.1}
+        />
+      </mesh>
+
+      {/* Ojo izquierdo - grande y expresivo estilo emoji */}
+      <group ref={leftEyeRef} position={[-0.22, 0.12, 0.48]}>
+        {/* Blanco del ojo */}
+        <mesh>
+          <sphereGeometry args={[0.18, 32, 32]} />
           <meshStandardMaterial 
-            color="#FF8C42" 
-            roughness={0.7} 
-            metalness={0.05}
-            emissive="#FF8C42"
-            emissiveIntensity={0.05}
+            color="#FFFFFF" 
+            roughness={0.05} 
+            metalness={0.15}
+            emissive="#FFFFFF"
+            emissiveIntensity={0.08}
           />
         </mesh>
-        {/* Mano que saluda */}
-        <mesh position={[0, -0.28, 0]}>
-          <sphereGeometry args={[0.11, 32, 32]} />
+        {/* Pupila */}
+        <mesh position={[0.02, 0, 0.16]}>
+          <sphereGeometry args={[0.09, 32, 32]} />
           <meshStandardMaterial 
-            color="#FF8C42" 
-            roughness={0.7} 
-            metalness={0.05}
+            color="#1A1A1A" 
+            roughness={0.02} 
+            metalness={0.6}
+            emissive="#0a0a0a"
+            emissiveIntensity={0.4}
+          />
+        </mesh>
+        {/* Brillo principal */}
+        <mesh position={[0.05, 0.05, 0.22]}>
+          <sphereGeometry args={[0.04, 16, 16]} />
+          <meshStandardMaterial 
+            color="#FFFFFF" 
+            roughness={0} 
+            metalness={1}
+            emissive="#FFFFFF"
+            emissiveIntensity={1.5}
+          />
+        </mesh>
+        {/* Brillo secundario */}
+        <mesh position={[-0.02, -0.03, 0.21]}>
+          <sphereGeometry args={[0.02, 16, 16]} />
+          <meshStandardMaterial 
+            color="#FFFFFF" 
+            roughness={0} 
+            metalness={1}
+            emissive="#FFFFFF"
+            emissiveIntensity={1}
           />
         </mesh>
       </group>
 
-      {/* Pierna izquierda - más proporcionada */}
-      <mesh position={[-0.16, -0.88, 0]}>
-        <capsuleGeometry args={[0.13, 0.28, 16, 32]} />
-        <meshStandardMaterial 
-          color="#FF8C42" 
-          roughness={0.7} 
-          metalness={0.05}
-          emissive="#FF8C42"
-          emissiveIntensity={0.05}
-        />
-      </mesh>
+      {/* Ojo derecho - grande y expresivo estilo emoji */}
+      <group ref={rightEyeRef} position={[0.22, 0.12, 0.48]}>
+        {/* Blanco del ojo */}
+        <mesh>
+          <sphereGeometry args={[0.18, 32, 32]} />
+          <meshStandardMaterial 
+            color="#FFFFFF" 
+            roughness={0.05} 
+            metalness={0.15}
+            emissive="#FFFFFF"
+            emissiveIntensity={0.08}
+          />
+        </mesh>
+        {/* Pupila */}
+        <mesh position={[-0.02, 0, 0.16]}>
+          <sphereGeometry args={[0.09, 32, 32]} />
+          <meshStandardMaterial 
+            color="#1A1A1A" 
+            roughness={0.02} 
+            metalness={0.6}
+            emissive="#0a0a0a"
+            emissiveIntensity={0.4}
+          />
+        </mesh>
+        {/* Brillo principal */}
+        <mesh position={[-0.05, 0.05, 0.22]}>
+          <sphereGeometry args={[0.04, 16, 16]} />
+          <meshStandardMaterial 
+            color="#FFFFFF" 
+            roughness={0} 
+            metalness={1}
+            emissive="#FFFFFF"
+            emissiveIntensity={1.5}
+          />
+        </mesh>
+        {/* Brillo secundario */}
+        <mesh position={[0.02, -0.03, 0.21]}>
+          <sphereGeometry args={[0.02, 16, 16]} />
+          <meshStandardMaterial 
+            color="#FFFFFF" 
+            roughness={0} 
+            metalness={1}
+            emissive="#FFFFFF"
+            emissiveIntensity={1}
+          />
+        </mesh>
+      </group>
 
-      {/* Pierna derecha - más proporcionada */}
-      <mesh position={[0.16, -0.88, 0]}>
-        <capsuleGeometry args={[0.13, 0.28, 16, 32]} />
-        <meshStandardMaterial 
-          color="#FF8C42" 
-          roughness={0.7} 
-          metalness={0.05}
-          emissive="#FF8C42"
-          emissiveIntensity={0.05}
-        />
-      </mesh>
-
-      {/* Cola - esponjosa con degradado */}
-      <mesh position={[0, -0.32, -0.38]} rotation={[0.5, 0, 0]}>
-        <sphereGeometry args={[0.27, 64, 64]} />
+      {/* Oreja izquierda - suave y expresiva */}
+      <mesh position={[-0.38, 0.52, -0.05]} rotation={[0.2, 0, -0.3]}>
+        <coneGeometry args={[0.2, 0.55, 32]} />
         <meshStandardMaterial 
           color="#FF7A34" 
-          roughness={0.75} 
-          metalness={0.03}
+          roughness={0.5} 
+          metalness={0.12}
           emissive="#FF6B28"
-          emissiveIntensity={0.06}
+          emissiveIntensity={0.08}
         />
       </mesh>
-      {/* Punta de la cola - blanca y suave */}
-      <mesh position={[0, -0.18, -0.6]} rotation={[0.3, 0, 0]}>
-        <sphereGeometry args={[0.19, 64, 64]} />
+      {/* Interior oreja izquierda */}
+      <mesh position={[-0.38, 0.52, 0]} rotation={[0.2, 0, -0.3]}>
+        <coneGeometry args={[0.14, 0.42, 32]} />
         <meshStandardMaterial 
-          color="#FFFBF0" 
-          roughness={0.65} 
-          metalness={0.02}
-          emissive="#FFFBF0"
-          emissiveIntensity={0.04}
+          color="#FFB380" 
+          roughness={0.4} 
+          metalness={0.05}
+          emissive="#FFB380"
+          emissiveIntensity={0.05}
         />
       </mesh>
+
+      {/* Oreja derecha - suave y expresiva */}
+      <mesh position={[0.38, 0.52, -0.05]} rotation={[0.2, 0, 0.3]}>
+        <coneGeometry args={[0.2, 0.55, 32]} />
+        <meshStandardMaterial 
+          color="#FF7A34" 
+          roughness={0.5} 
+          metalness={0.12}
+          emissive="#FF6B28"
+          emissiveIntensity={0.08}
+        />
+      </mesh>
+      {/* Interior oreja derecha */}
+      <mesh position={[0.38, 0.52, 0]} rotation={[0.2, 0, 0.3]}>
+        <coneGeometry args={[0.14, 0.42, 32]} />
+        <meshStandardMaterial 
+          color="#FFB380" 
+          roughness={0.4} 
+          metalness={0.05}
+          emissive="#FFB380"
+          emissiveIntensity={0.05}
+        />
+      </mesh>
+
+      {/* Detalles de textura - manchas sutiles en la frente */}
+      <mesh position={[0, 0.35, 0.5]}>
+        <sphereGeometry args={[0.08, 32, 32]} />
+        <meshStandardMaterial 
+          color="#FF8F50" 
+          roughness={0.5} 
+          metalness={0.08}
+          transparent={true}
+          opacity={0.3}
+        />
+      </mesh>
+      
+      </group>
     </group>
   );
 };
@@ -359,11 +332,11 @@ const Aura3DCharacter = ({ onClick }: Character3DProps) => {
   const [isWaving, setIsWaving] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
 
-  // Animación de saludo inicial - más larga para que sea notoria
+  // Animación de saludo inicial - más corta para emoji
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsWaving(false);
-    }, 4000);
+    }, 2500);
 
     return () => clearTimeout(timer);
   }, []);
@@ -372,8 +345,8 @@ const Aura3DCharacter = ({ onClick }: Character3DProps) => {
   useEffect(() => {
     const interval = setInterval(() => {
       setIsWaving(true);
-      setTimeout(() => setIsWaving(false), 3000);
-    }, 25000);
+      setTimeout(() => setIsWaving(false), 2000);
+    }, 20000);
 
     return () => clearInterval(interval);
   }, []);
