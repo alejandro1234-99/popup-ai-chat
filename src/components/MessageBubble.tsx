@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import ProductCard from "./ProductCard";
+import auraAvatar from "@/assets/aura-avatar.png";
 
 type Message = {
   role: "user" | "assistant";
@@ -139,8 +140,8 @@ const MessageBubble = ({ message }: MessageBubbleProps) => {
         {isProductCards ? (
           <div className="flex flex-col">
             <div className="flex items-center gap-2 mb-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(96,165,250,0.3)]">
-                <span className="text-sm text-white font-bold">A</span>
+              <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(96,165,250,0.3)] overflow-hidden p-0.5">
+                <img src={auraAvatar} alt="AURA" className="w-full h-full object-cover" />
               </div>
               <span className="text-sm font-semibold text-[#E5E7EB]">AURA 💬</span>
             </div>
@@ -149,8 +150,8 @@ const MessageBubble = ({ message }: MessageBubbleProps) => {
         ) : (
           <div className="flex flex-col">
             <div className="flex items-center gap-2 mb-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(96,165,250,0.3)]">
-                <span className="text-sm text-white font-bold">A</span>
+              <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(96,165,250,0.3)] overflow-hidden p-0.5">
+                <img src={auraAvatar} alt="AURA" className="w-full h-full object-cover" />
               </div>
               <span className="text-sm font-semibold text-[#E5E7EB]">AURA 💬</span>
             </div>
