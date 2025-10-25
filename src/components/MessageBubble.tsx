@@ -70,7 +70,7 @@ const MessageBubble = ({ message }: MessageBubbleProps) => {
       </div>
       <div className="flex-1">
         {isProductCards ? (
-          <div className="flex flex-wrap gap-3">
+          <div className="overflow-x-auto snap-x snap-mandatory scrollbar-hide flex gap-4 pb-2 pr-4">
             {parsedContent.items.map((item: any, idx: number) => {
               // Validate required fields
               if (!item.title || !item.price || !item.url) {

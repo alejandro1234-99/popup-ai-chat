@@ -13,28 +13,28 @@ interface ProductCardProps {
 
 const ProductCard = ({ product }: ProductCardProps) => {
   return (
-    <div className="bg-card border border-border rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow max-w-[320px]">
+    <div className="w-[240px] flex-shrink-0 snap-start bg-card border border-border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
       {product.image && (
         <img
           src={product.image}
           alt={product.title}
-          className="w-full h-48 object-cover"
+          className="w-full h-40 object-cover"
           onError={(e) => {
             // Hide image if it fails to load
             e.currentTarget.style.display = 'none';
           }}
         />
       )}
-      <div className="p-4 space-y-2">
-        <h3 className="font-bold text-base text-foreground leading-tight">{product.title}</h3>
+      <div className="p-3 space-y-2">
+        <h3 className="font-bold text-sm text-foreground leading-tight line-clamp-2">{product.title}</h3>
         {product.description && (
-          <p className="text-sm text-muted-foreground line-clamp-2">{product.description}</p>
+          <p className="text-xs text-muted-foreground line-clamp-2">{product.description}</p>
         )}
-        <p className="text-lg font-bold text-foreground pt-1">{product.price}</p>
+        <p className="text-base font-bold text-foreground">{product.price}</p>
         <Button
           size="sm"
           variant="default"
-          className="w-full mt-2 gap-1"
+          className="w-full text-xs gap-1"
           onClick={() => window.open(product.url, "_blank")}
         >
           Ver producto
