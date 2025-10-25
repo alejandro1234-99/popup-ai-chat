@@ -1,128 +1,71 @@
 import { useRef, useState, useEffect } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, PerspectiveCamera, Environment, useGLTF } from "@react-three/drei";
+import { Canvas, useFrame, useLoader } from "@react-three/fiber";
+import { PerspectiveCamera, Environment } from "@react-three/drei";
 import * as THREE from "three";
+import auraFoxAvatar from "@/assets/aura-fox-avatar.png";
 
 interface Character3DProps {
   onClick: () => void;
 }
 
-// Componente del personaje 3D
-const AuraModel = ({ isWaving, onHover }: { isWaving: boolean; onHover: (hover: boolean) => void }) => {
-  const leftArmRef = useRef<THREE.Group>(null);
-  const groupRef = useRef<THREE.Group>(null);
+// Componente del zorro AURA en 3D
+const AuraFoxModel = ({ isWaving, onHover }: { isWaving: boolean; onHover: (hover: boolean) => void }) => {
+  const meshRef = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
+  const texture = useLoader(THREE.TextureLoader, auraFoxAvatar);
   
-  // Animación de respiración y saludo
+  // Animación de respiración, saludo y hover
   useFrame((state) => {
-    if (!leftArmRef.current || !groupRef.current) return;
+    if (!meshRef.current) return;
     
     const time = state.clock.getElapsedTime();
     
     // Breathing animation (sutil)
     const breathScale = 1 + Math.sin(time * 2) * 0.02;
-    groupRef.current.scale.y = breathScale;
+    meshRef.current.scale.set(1, breathScale, 1);
     
     // Idle rotation
     if (!isWaving) {
-      groupRef.current.rotation.y = Math.sin(time * 0.5) * 0.1;
+      meshRef.current.rotation.y = Math.sin(time * 0.5) * 0.1;
     }
     
-    // Wave animation - mueve el brazo izquierdo
+    // Wave animation - rotación más pronunciada
     if (isWaving) {
-      const waveRotation = Math.sin(time * 8) * 0.3;
-      leftArmRef.current.rotation.z = -0.5 + waveRotation;
+      const waveRotation = Math.sin(time * 8) * 0.15;
+      meshRef.current.rotation.z = waveRotation;
     } else {
-      leftArmRef.current.rotation.z = 0.2;
+      meshRef.current.rotation.z = 0;
     }
     
     // Hover bounce
     if (hovered) {
-      groupRef.current.position.y = Math.sin(time * 3) * 0.1;
+      meshRef.current.position.y = Math.sin(time * 3) * 0.1;
+    } else {
+      meshRef.current.position.y = 0;
     }
   });
 
   return (
-    <group ref={groupRef} position={[0, -1, 0]}>
-      {/* Head */}
-      <mesh 
-        position={[0, 0.7, 0]}
-        onPointerOver={() => {
-          setHovered(true);
-          onHover(true);
-        }}
-        onPointerOut={() => {
-          setHovered(false);
-          onHover(false);
-        }}
-      >
-        <sphereGeometry args={[0.35, 32, 32]} />
-        <meshStandardMaterial 
-          color="#60A5FA" 
-          emissive="#2563EB"
-          emissiveIntensity={0.3}
-          metalness={0.6}
-          roughness={0.2}
-        />
-      </mesh>
-
-      {/* Eyes */}
-      <mesh position={[-0.12, 0.75, 0.3]}>
-        <sphereGeometry args={[0.06, 16, 16]} />
-        <meshStandardMaterial color="#1E293B" emissive="#8B5CF6" emissiveIntensity={0.5} />
-      </mesh>
-      <mesh position={[0.12, 0.75, 0.3]}>
-        <sphereGeometry args={[0.06, 16, 16]} />
-        <meshStandardMaterial color="#1E293B" emissive="#8B5CF6" emissiveIntensity={0.5} />
-      </mesh>
-
-      {/* Body */}
-      <mesh position={[0, 0.15, 0]}>
-        <cylinderGeometry args={[0.25, 0.3, 0.6, 32]} />
-        <meshStandardMaterial 
-          color="#3B82F6" 
-          emissive="#1D4ED8"
-          emissiveIntensity={0.2}
-          metalness={0.5}
-          roughness={0.3}
-        />
-      </mesh>
-
-      {/* Left Arm (waving) */}
-      <group ref={leftArmRef} position={[-0.35, 0.3, 0]}>
-        <mesh>
-          <cylinderGeometry args={[0.08, 0.08, 0.5, 16]} />
-          <meshStandardMaterial color="#60A5FA" metalness={0.4} roughness={0.4} />
-        </mesh>
-        {/* Hand */}
-        <mesh position={[0, -0.3, 0]}>
-          <sphereGeometry args={[0.1, 16, 16]} />
-          <meshStandardMaterial color="#93C5FD" metalness={0.3} roughness={0.5} />
-        </mesh>
-      </group>
-
-      {/* Right Arm */}
-      <group position={[0.35, 0.3, 0]}>
-        <mesh rotation={[0, 0, -0.2]}>
-          <cylinderGeometry args={[0.08, 0.08, 0.5, 16]} />
-          <meshStandardMaterial color="#60A5FA" metalness={0.4} roughness={0.4} />
-        </mesh>
-        <mesh position={[0, -0.3, 0]}>
-          <sphereGeometry args={[0.1, 16, 16]} />
-          <meshStandardMaterial color="#93C5FD" metalness={0.3} roughness={0.5} />
-        </mesh>
-      </group>
-
-      {/* Legs */}
-      <mesh position={[-0.15, -0.45, 0]}>
-        <cylinderGeometry args={[0.1, 0.08, 0.6, 16]} />
-        <meshStandardMaterial color="#2563EB" metalness={0.5} roughness={0.4} />
-      </mesh>
-      <mesh position={[0.15, -0.45, 0]}>
-        <cylinderGeometry args={[0.1, 0.08, 0.6, 16]} />
-        <meshStandardMaterial color="#2563EB" metalness={0.5} roughness={0.4} />
-      </mesh>
-    </group>
+    <mesh
+      ref={meshRef}
+      onPointerOver={() => {
+        setHovered(true);
+        onHover(true);
+      }}
+      onPointerOut={() => {
+        setHovered(false);
+        onHover(false);
+      }}
+    >
+      <planeGeometry args={[2.5, 2.5]} />
+      <meshStandardMaterial 
+        map={texture} 
+        transparent={true}
+        side={THREE.DoubleSide}
+        metalness={0.2}
+        roughness={0.8}
+      />
+    </mesh>
   );
 };
 
@@ -188,7 +131,7 @@ const Aura3DCharacter = ({ onClick }: Character3DProps) => {
           />
 
           {/* Character */}
-          <AuraModel isWaving={isWaving} onHover={setIsHovered} />
+          <AuraFoxModel isWaving={isWaving} onHover={setIsHovered} />
 
           {/* Environment */}
           <Environment preset="city" />
