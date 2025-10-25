@@ -149,7 +149,7 @@ const ChatWindow = ({ onClose }: ChatWindowProps) => {
   };
 
   return (
-    <div className="fixed bottom-24 right-6 z-40 w-[420px] h-[650px] bg-gradient-to-b from-[#0F172A] to-[#1E293B] rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.4)] border border-[#1F2937] flex flex-col overflow-hidden animate-scale-in backdrop-blur-md">
+    <div className="fixed bottom-24 right-6 z-40 w-full max-w-[450px] sm:w-[450px] h-[650px] bg-gradient-to-b from-[#0F172A] to-[#1E293B] rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.4)] border border-[#1F2937] flex flex-col overflow-hidden animate-scale-in backdrop-blur-md mx-4 sm:mx-0">
       {/* Header */}
       <div className="bg-gradient-to-r from-[#1E3A8A]/40 to-[#2563EB]/30 backdrop-blur-sm text-white p-5 flex items-center justify-between border-b border-[#3B82F6]/20">
         <div className="flex items-center gap-3">
