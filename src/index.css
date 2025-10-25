@@ -197,4 +197,48 @@ All colors MUST be HSL.
     animation: gentleWave 6s ease-in-out infinite;
     transform-origin: 70% 70%;
   }
+
+  /* Breathing animation for character */
+  @keyframes breathing {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.03);
+    }
+  }
+
+  .animate-breathing {
+    animation: breathing 4s ease-in-out infinite;
+  }
+
+  /* Gentle bounce on hover */
+  @keyframes gentleBounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  .animate-gentle-bounce {
+    animation: gentleBounce 0.6s ease-in-out;
+  }
+
+  /* Slow ping effect */
+  @keyframes pingSlow {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    75%, 100% {
+      transform: scale(1.5);
+      opacity: 0;
+    }
+  }
+
+  .animate-ping-slow {
+    animation: pingSlow 3s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
 }
