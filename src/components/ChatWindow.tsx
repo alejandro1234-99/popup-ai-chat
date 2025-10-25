@@ -67,9 +67,14 @@ const ChatWindow = ({ onClose }: ChatWindowProps) => {
       if (data.type === "text") {
         // Respuesta de texto simple
         assistantContent = data.content;
-      } else if (data.type === "product_cards") {
+      } else if (data.type === "product_cards" && Array.isArray(data.items)) {
         // Respuesta con tarjetas de producto - guardamos el JSON completo
-        assistantContent = JSON.stringify(data);
+        // Validar que items tenga al menos un producto
+        if (data.items.length > 0) {
+          assistantContent = JSON.stringify(data);
+        } else {
+          assistantContent = "No se encontraron productos.";
+        }
       } else {
         // Formato desconocido, tratamos como texto
         assistantContent = typeof data === "string" ? data : JSON.stringify(data);

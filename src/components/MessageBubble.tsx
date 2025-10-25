@@ -12,15 +12,27 @@ interface MessageBubbleProps {
 const MessageBubble = ({ message }: MessageBubbleProps) => {
   const isUser = message.role === "user";
 
-  // Try to parse as product cards JSON
+  // Try to parse as product cards JSON with robust error handling
   let parsedContent: any = null;
   try {
-    parsedContent = JSON.parse(message.content);
-  } catch {
-    // Not JSON, treat as regular text
+    // Clean the content before parsing (remove potential extra whitespace/characters)
+    const cleanedContent = message.content.trim();
+    parsedContent = JSON.parse(cleanedContent);
+  } catch (e) {
+    // Try to extract JSON if it's embedded in text
+    try {
+      const jsonMatch = message.content.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        parsedContent = JSON.parse(jsonMatch[0]);
+      }
+    } catch {
+      // Not JSON, treat as regular text
+    }
   }
 
-  const isProductCards = parsedContent?.type === "product_cards" && Array.isArray(parsedContent?.items);
+  const isProductCards = parsedContent?.type === "product_cards" && 
+                        Array.isArray(parsedContent?.items) && 
+                        parsedContent.items.length > 0;
 
   if (isUser) {
     return (
@@ -42,10 +54,14 @@ const MessageBubble = ({ message }: MessageBubbleProps) => {
       </div>
       <div className="flex-1 max-w-[80%]">
         {isProductCards ? (
-          <div className="space-y-3">
-            {parsedContent.items.map((item: any, idx: number) => (
-              <ProductCard key={idx} product={item} />
-            ))}
+          <div className="space-y-2">
+            {parsedContent.items.map((item: any, idx: number) => {
+              // Validate that each item has the required fields
+              if (!item.title || !item.price || !item.url) {
+                return null;
+              }
+              return <ProductCard key={idx} product={item} />;
+            })}
           </div>
         ) : (
           <div className="bg-[hsl(var(--chat-bot-bg))] text-primary-foreground rounded-2xl rounded-tl-sm px-4 py-2">
