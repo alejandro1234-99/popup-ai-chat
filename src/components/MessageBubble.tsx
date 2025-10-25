@@ -135,25 +135,25 @@ const MessageBubble = ({ message }: MessageBubbleProps) => {
 
   return (
     <div className="flex gap-3 items-start animate-fade-in">
-      <div className="w-9 h-9 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center flex-shrink-0 shadow-[0_0_15px_rgba(96,165,250,0.3)]">
-        <span className="text-sm text-white font-bold">A</span>
+      <div className="flex items-center gap-2">
+        <div className="w-9 h-9 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center flex-shrink-0 shadow-[0_0_15px_rgba(96,165,250,0.3)]">
+          <span className="text-sm text-white font-bold">A</span>
+        </div>
+        <div className="text-xs font-medium text-[#60A5FA] whitespace-nowrap">
+          AURA 💬
+        </div>
       </div>
       <div className="flex-1 max-w-full">
         {isProductCards ? (
           <div>
-            <div className="text-xs font-medium text-[#60A5FA] mb-2 flex items-center gap-1">
-              AURA 💬
-            </div>
             <ProductCarousel items={parsedContent.items} />
           </div>
         ) : (
-          <div>
-            <div className="text-xs font-medium text-[#60A5FA] mb-1 flex items-center gap-1">
+          <div className="bg-gradient-to-r from-[#1E3A8A]/20 to-[#2563EB]/10 border border-[#3B82F6]/40 text-[#E0E7FF] rounded-2xl rounded-tl-sm px-4 py-3 max-w-[85%] shadow-[0_2px_8px_rgba(0,0,0,0.25)]">
+            <div className="text-xs font-medium text-[#60A5FA] mb-2 flex items-center gap-1">
               AURA 💬
             </div>
-            <div className="bg-gradient-to-r from-[#1E3A8A]/20 to-[#2563EB]/10 border border-[#3B82F6]/40 text-[#E0E7FF] rounded-2xl rounded-tl-sm px-4 py-3 max-w-[85%] shadow-[0_2px_8px_rgba(0,0,0,0.25)]">
-              <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
-            </div>
+            <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
           </div>
         )}
       </div>
