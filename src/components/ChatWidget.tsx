@@ -10,7 +10,7 @@ const ChatWidget = () => {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 z-50 w-[90px] h-[90px] rounded-full relative flex items-center justify-center bg-[#0f172a]/70 backdrop-blur-md shadow-[0_0_25px_rgba(96,165,250,0.3)] border border-[#1e293b] overflow-visible hover:shadow-[0_0_35px_rgba(96,165,250,0.5)] transition-shadow duration-300"
+          className="fixed bottom-6 left-6 z-50 w-[90px] h-[90px] rounded-full relative flex items-center justify-center bg-[#0f172a]/70 backdrop-blur-md shadow-[0_0_25px_rgba(96,165,250,0.3)] border border-[#1e293b] overflow-visible hover:shadow-[0_0_35px_rgba(96,165,250,0.5)] transition-shadow duration-300"
           aria-label="Abrir chat con AURA"
         >
           {/* Inner glow gradient layer */}
