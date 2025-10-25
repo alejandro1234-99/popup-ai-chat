@@ -149,42 +149,51 @@ const ChatWindow = ({ onClose }: ChatWindowProps) => {
   };
 
   return (
-    <div className="fixed bottom-24 right-6 z-40 w-[380px] h-[600px] bg-card rounded-2xl shadow-[var(--shadow-elegant)] border border-border flex flex-col overflow-hidden animate-scale-in">
+    <div className="fixed bottom-24 right-6 z-40 w-[400px] h-[600px] bg-white rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.08)] border border-gray-100 flex flex-col overflow-hidden animate-scale-in">
       {/* Header */}
-      <div className="bg-gradient-to-r from-primary to-[hsl(250,85%,75%)] text-primary-foreground p-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
-          <h3 className="font-semibold">Asistente IA</h3>
+      <div className="bg-gradient-to-r from-blue-600 to-blue-500 text-white p-5 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+            <span className="text-lg font-bold">A</span>
+          </div>
+          <div>
+            <h3 className="font-semibold text-base">AURA</h3>
+            <p className="text-xs text-blue-100">Asistente Universal de Recomendaciones</p>
+          </div>
         </div>
         <button
           onClick={onClose}
-          className="hover:bg-white/10 rounded-full p-1 transition-colors"
-          aria-label="Close chat"
+          className="hover:bg-white/10 rounded-full p-2 transition-colors"
+          aria-label="Cerrar chat"
         >
           <X className="h-5 w-5" />
         </button>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-background">
+      <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-gray-50">
         {messages.length === 0 && (
-          <div className="text-center text-muted-foreground py-8">
-            <p className="text-sm">¡Hola! ¿En qué puedo ayudarte hoy?</p>
+          <div className="text-center text-gray-500 py-12">
+            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span className="text-2xl font-bold text-blue-600">A</span>
+            </div>
+            <p className="text-sm font-medium text-gray-700 mb-1">¡Hola! Soy AURA</p>
+            <p className="text-xs text-gray-500">¿En qué puedo ayudarte hoy?</p>
           </div>
         )}
         {messages.map((msg, idx) => (
           <MessageBubble key={idx} message={msg} />
         ))}
         {isLoading && messages[messages.length - 1]?.role === "user" && (
-          <div className="flex gap-2 items-start">
-            <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
-              <span className="text-xs text-primary-foreground">AI</span>
+          <div className="flex gap-3 items-start">
+            <div className="w-9 h-9 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
+              <span className="text-sm text-white font-bold">A</span>
             </div>
-            <div className="bg-[hsl(var(--chat-bot-bg))] text-primary-foreground rounded-2xl rounded-tl-sm px-4 py-2">
-              <div className="flex gap-1">
-                <div className="w-2 h-2 bg-primary-foreground/60 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-                <div className="w-2 h-2 bg-primary-foreground/60 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-                <div className="w-2 h-2 bg-primary-foreground/60 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+            <div className="bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-2xl rounded-tl-sm px-4 py-3">
+              <div className="flex gap-1.5">
+                <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+                <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+                <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
               </div>
             </div>
           </div>
@@ -193,7 +202,7 @@ const ChatWindow = ({ onClose }: ChatWindowProps) => {
       </div>
 
       {/* Input */}
-      <div className="p-4 border-t border-border bg-card">
+      <div className="p-4 border-t border-gray-200 bg-white">
         <div className="flex gap-2">
           <Input
             value={input}
@@ -201,13 +210,13 @@ const ChatWindow = ({ onClose }: ChatWindowProps) => {
             onKeyPress={handleKeyPress}
             placeholder="Escribe tu mensaje..."
             disabled={isLoading}
-            className="flex-1"
+            className="flex-1 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
           />
           <Button
             onClick={handleSend}
             disabled={isLoading || !input.trim()}
             size="icon"
-            className="bg-primary hover:bg-primary/90"
+            className="bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
           >
             <Send className="h-4 w-4" />
           </Button>

@@ -52,37 +52,47 @@ const MessageBubble = ({ message }: MessageBubbleProps) => {
 
   if (isUser) {
     return (
-      <div className="flex gap-2 items-start justify-end">
-        <div className="bg-[hsl(var(--chat-user-bg))] text-foreground rounded-2xl rounded-tr-sm px-4 py-2 max-w-[80%]">
-          <p className="text-sm">{message.content}</p>
+      <div className="flex gap-3 items-start justify-end animate-fade-in">
+        <div className="bg-blue-600 text-white rounded-2xl rounded-tr-sm px-4 py-3 max-w-[75%] shadow-sm">
+          <p className="text-sm leading-relaxed">{message.content}</p>
         </div>
-        <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center flex-shrink-0">
-          <span className="text-xs font-medium">Tú</span>
+        <div className="w-9 h-9 rounded-full bg-gray-300 flex items-center justify-center flex-shrink-0">
+          <span className="text-xs font-semibold text-gray-700">Tú</span>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex gap-2 items-start">
-      <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
-        <span className="text-xs text-primary-foreground font-medium">AI</span>
+    <div className="flex gap-3 items-start animate-fade-in">
+      <div className="w-9 h-9 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
+        <span className="text-sm text-white font-bold">A</span>
       </div>
       <div className="flex-1">
         {isProductCards ? (
-          <div className="overflow-x-auto snap-x snap-mandatory scrollbar-hide flex gap-4 pb-2 pr-4">
-            {parsedContent.items.map((item: any, idx: number) => {
-              // Validate required fields
-              if (!item.title || !item.price || !item.url) {
-                console.warn("Invalid product item:", item);
-                return null;
-              }
-              return <ProductCard key={idx} product={item} />;
-            })}
+          <div>
+            <div className="text-xs font-medium text-blue-600 mb-2 flex items-center gap-1">
+              AURA 💬
+            </div>
+            <div className="overflow-x-auto snap-x snap-mandatory scrollbar-hide flex gap-3 pb-2">
+              {parsedContent.items.map((item: any, idx: number) => {
+                // Validate required fields
+                if (!item.title || !item.price || !item.url) {
+                  console.warn("Invalid product item:", item);
+                  return null;
+                }
+                return <ProductCard key={idx} product={item} />;
+              })}
+            </div>
           </div>
         ) : (
-          <div className="bg-[hsl(var(--chat-bot-bg))] text-primary-foreground rounded-2xl rounded-tl-sm px-4 py-2 max-w-[85%]">
-            <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+          <div>
+            <div className="text-xs font-medium text-blue-600 mb-1 flex items-center gap-1">
+              AURA 💬
+            </div>
+            <div className="bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 text-gray-800 rounded-2xl rounded-tl-sm px-4 py-3 max-w-[85%] shadow-sm">
+              <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
+            </div>
           </div>
         )}
       </div>

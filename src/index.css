@@ -113,6 +113,11 @@ All colors MUST be HSL.
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
   }
+
+  /* Smooth scroll behavior */
+  .overflow-x-auto {
+    scroll-behavior: smooth;
+  }
 }
 
 @layer base {
