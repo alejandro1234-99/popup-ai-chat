@@ -175,7 +175,7 @@ const ChatWindow = ({ onClose }: ChatWindowProps) => {
       <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide p-5 space-y-4 bg-gradient-to-b from-slate-900/30 to-slate-950/40 backdrop-blur-sm">
         {messages.length === 0 && (
           <div className="text-center text-slate-400 py-12">
-            <div className="w-28 h-28 flex items-center justify-center mx-auto mb-4">
+            <div className="w-28 h-28 flex items-center justify-center mx-auto mb-2">
               <ZunoEmojiAvatar size={112} />
             </div>
             <p className="text-base font-medium text-white/95 mb-2">¡Hola! Soy Zuno</p>
