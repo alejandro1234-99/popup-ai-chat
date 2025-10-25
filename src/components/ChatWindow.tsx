@@ -3,7 +3,6 @@ import { X, Send } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import MessageBubble from "./MessageBubble";
-import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
 type Message = {
@@ -14,6 +13,8 @@ type Message = {
 interface ChatWindowProps {
   onClose: () => void;
 }
+
+const N8N_WEBHOOK_URL = "https://ibfnlxoh.rpcd.host/webhook/6ebd7539-e550-4b2b-87e9-93a753ffbc76";
 
 const ChatWindow = ({ onClose }: ChatWindowProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -39,96 +40,53 @@ const ChatWindow = ({ onClose }: ChatWindowProps) => {
     setIsLoading(true);
 
     try {
-      const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`;
-      
-      const response = await fetch(CHAT_URL, {
+      const response = await fetch(N8N_WEBHOOK_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
         },
-        body: JSON.stringify({ messages: [...messages, userMessage] }),
+        body: JSON.stringify({ message: userMessage.content }),
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        
-        if (response.status === 429) {
-          toast({
-            title: "Rate limit exceeded",
-            description: "Too many requests. Please try again later.",
-            variant: "destructive",
-          });
-        } else if (response.status === 402) {
-          toast({
-            title: "Payment required",
-            description: "Please add funds to continue using AI chat.",
-            variant: "destructive",
-          });
-        } else {
-          throw new Error(errorData.error || "Failed to send message");
-        }
-        setIsLoading(false);
-        return;
+        throw new Error("Webhook request failed");
       }
 
-      if (!response.body) {
-        throw new Error("No response body");
+      const data = await response.json();
+      
+      let assistantContent: string;
+      
+      if (data.type === "text") {
+        // Respuesta de texto simple
+        assistantContent = data.content;
+      } else if (data.type === "product_cards") {
+        // Respuesta con tarjetas de producto - guardamos el JSON completo
+        assistantContent = JSON.stringify(data);
+      } else {
+        // Formato desconocido, tratamos como texto
+        assistantContent = typeof data === "string" ? data : JSON.stringify(data);
       }
 
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-      let textBuffer = "";
-      let assistantContent = "";
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        textBuffer += decoder.decode(value, { stream: true });
-
-        let newlineIndex: number;
-        while ((newlineIndex = textBuffer.indexOf("\n")) !== -1) {
-          let line = textBuffer.slice(0, newlineIndex);
-          textBuffer = textBuffer.slice(newlineIndex + 1);
-
-          if (line.endsWith("\r")) line = line.slice(0, -1);
-          if (line.startsWith(":") || line.trim() === "") continue;
-          if (!line.startsWith("data: ")) continue;
-
-          const jsonStr = line.slice(6).trim();
-          if (jsonStr === "[DONE]") break;
-
-          try {
-            const parsed = JSON.parse(jsonStr);
-            const content = parsed.choices?.[0]?.delta?.content as string | undefined;
-            
-            if (content) {
-              assistantContent += content;
-              
-              setMessages((prev) => {
-                const lastMsg = prev[prev.length - 1];
-                if (lastMsg?.role === "assistant") {
-                  return prev.map((m, i) =>
-                    i === prev.length - 1 ? { ...m, content: assistantContent } : m
-                  );
-                }
-                return [...prev, { role: "assistant", content: assistantContent }];
-              });
-            }
-          } catch {
-            textBuffer = line + "\n" + textBuffer;
-            break;
-          }
-        }
-      }
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: assistantContent },
+      ]);
     } catch (error) {
       console.error("Chat error:", error);
       toast({
         title: "Error",
-        description: error instanceof Error ? error.message : "Failed to send message",
+        description: "Ups, hubo un error. Inténtalo de nuevo.",
         variant: "destructive",
       });
+      
+      // Mostrar mensaje de error en el chat
+      setMessages((prev) => [
+        ...prev,
+        { 
+          role: "assistant", 
+          content: "Ups, hubo un error. Inténtalo de nuevo." 
+        },
+      ]);
     } finally {
       setIsLoading(false);
     }
