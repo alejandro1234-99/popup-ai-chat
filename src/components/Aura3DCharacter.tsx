@@ -1,54 +1,54 @@
 import { useRef, useState, useEffect } from "react";
-import { Canvas, useFrame, useLoader } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { PerspectiveCamera, Environment } from "@react-three/drei";
 import * as THREE from "three";
-import auraFoxAvatar from "@/assets/aura-fox-avatar.png";
 
 interface Character3DProps {
   onClick: () => void;
 }
 
-// Componente del zorro AURA en 3D
+// Componente del zorro AURA construido con formas 3D
 const AuraFoxModel = ({ isWaving, onHover }: { isWaving: boolean; onHover: (hover: boolean) => void }) => {
-  const meshRef = useRef<THREE.Mesh>(null);
+  const groupRef = useRef<THREE.Group>(null);
+  const rightArmRef = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState(false);
-  const texture = useLoader(THREE.TextureLoader, auraFoxAvatar);
   
-  // Animaciones expresivas: respiración, saludo y movimiento idle
+  // Animaciones del personaje completo
   useFrame((state) => {
-    if (!meshRef.current) return;
+    if (!groupRef.current) return;
     
     const time = state.clock.getElapsedTime();
     
-    // Breathing animation - más notoria
-    const breathScale = 1 + Math.sin(time * 2) * 0.05;
-    meshRef.current.scale.set(breathScale, breathScale, 1);
+    // Respiración - movimiento sutil del cuerpo
+    const breathScale = 1 + Math.sin(time * 2) * 0.03;
+    groupRef.current.scale.y = breathScale;
     
-    // Wave animation - movimiento completo de saludo
-    if (isWaving) {
-      const waveIntensity = Math.sin(time * 6) * 0.3;
-      meshRef.current.rotation.z = waveIntensity;
-      // Movimiento vertical durante el saludo
-      meshRef.current.position.y = Math.abs(Math.sin(time * 6)) * 0.15;
-      // Ligera rotación en Y para dar más vida
-      meshRef.current.rotation.y = Math.sin(time * 3) * 0.1;
-    } else {
-      // Idle animation - movimiento sutil de cabeza
-      meshRef.current.rotation.z = Math.sin(time * 1.5) * 0.05;
-      meshRef.current.rotation.y = Math.sin(time * 0.8) * 0.08;
+    // Animación de saludo con el brazo
+    if (rightArmRef.current && isWaving) {
+      // Rotación del brazo saludando
+      const waveRotation = Math.sin(time * 6) * 0.6 - 0.3;
+      rightArmRef.current.rotation.z = waveRotation;
+      // Movimiento del cuerpo durante el saludo
+      groupRef.current.position.y = Math.abs(Math.sin(time * 6)) * 0.1;
+    } else if (rightArmRef.current) {
+      // Brazo en posición relajada
+      rightArmRef.current.rotation.z = -0.2;
       
-      // Hover bounce - más pronunciado
+      // Idle animation - balanceo muy sutil
+      groupRef.current.rotation.y = Math.sin(time * 0.8) * 0.05;
+      
+      // Hover bounce
       if (hovered) {
-        meshRef.current.position.y = Math.sin(time * 4) * 0.15;
+        groupRef.current.position.y = Math.sin(time * 4) * 0.08;
       } else {
-        meshRef.current.position.y = Math.sin(time * 1.2) * 0.03;
+        groupRef.current.position.y = Math.sin(time * 1.2) * 0.02;
       }
     }
   });
 
   return (
-    <mesh
-      ref={meshRef}
+    <group
+      ref={groupRef}
       onPointerOver={() => {
         setHovered(true);
         onHover(true);
@@ -58,17 +58,115 @@ const AuraFoxModel = ({ isWaving, onHover }: { isWaving: boolean; onHover: (hove
         onHover(false);
       }}
     >
-      <planeGeometry args={[2.8, 2.8]} />
-      <meshStandardMaterial 
-        map={texture} 
-        transparent={true}
-        side={THREE.DoubleSide}
-        metalness={0.3}
-        roughness={0.7}
-        emissive="#FFE5CC"
-        emissiveIntensity={0.2}
-      />
-    </mesh>
+      {/* Cuerpo - forma redondeada */}
+      <mesh position={[0, -0.4, 0]}>
+        <capsuleGeometry args={[0.35, 0.4, 16, 32]} />
+        <meshStandardMaterial color="#FF8C42" roughness={0.4} metalness={0.1} />
+      </mesh>
+
+      {/* Cabeza - esfera grande */}
+      <mesh position={[0, 0.3, 0]}>
+        <sphereGeometry args={[0.5, 32, 32]} />
+        <meshStandardMaterial color="#FF8C42" roughness={0.4} metalness={0.1} />
+      </mesh>
+
+      {/* Hocico/cara blanca */}
+      <mesh position={[0, 0.15, 0.4]}>
+        <sphereGeometry args={[0.25, 32, 32]} />
+        <meshStandardMaterial color="#FFF5E6" roughness={0.4} metalness={0.1} />
+      </mesh>
+
+      {/* Nariz */}
+      <mesh position={[0, 0.15, 0.62]}>
+        <sphereGeometry args={[0.08, 16, 16]} />
+        <meshStandardMaterial color="#3D3D3D" roughness={0.3} metalness={0.2} />
+      </mesh>
+
+      {/* Ojo izquierdo - blanco */}
+      <mesh position={[-0.18, 0.35, 0.35]}>
+        <sphereGeometry args={[0.12, 16, 16]} />
+        <meshStandardMaterial color="#FFFFFF" roughness={0.2} metalness={0.1} />
+      </mesh>
+      {/* Pupila izquierda */}
+      <mesh position={[-0.16, 0.35, 0.45]}>
+        <sphereGeometry args={[0.06, 16, 16]} />
+        <meshStandardMaterial color="#2D2D2D" roughness={0.1} metalness={0.3} />
+      </mesh>
+
+      {/* Ojo derecho - blanco */}
+      <mesh position={[0.18, 0.35, 0.35]}>
+        <sphereGeometry args={[0.12, 16, 16]} />
+        <meshStandardMaterial color="#FFFFFF" roughness={0.2} metalness={0.1} />
+      </mesh>
+      {/* Pupila derecha */}
+      <mesh position={[0.16, 0.35, 0.45]}>
+        <sphereGeometry args={[0.06, 16, 16]} />
+        <meshStandardMaterial color="#2D2D2D" roughness={0.1} metalness={0.3} />
+      </mesh>
+
+      {/* Oreja izquierda */}
+      <mesh position={[-0.25, 0.65, 0]} rotation={[0, 0, -0.3]}>
+        <coneGeometry args={[0.15, 0.4, 16]} />
+        <meshStandardMaterial color="#FF8C42" roughness={0.4} metalness={0.1} />
+      </mesh>
+      {/* Interior oreja izquierda */}
+      <mesh position={[-0.25, 0.65, 0.05]} rotation={[0, 0, -0.3]}>
+        <coneGeometry args={[0.1, 0.3, 16]} />
+        <meshStandardMaterial color="#FFB380" roughness={0.3} metalness={0.1} />
+      </mesh>
+
+      {/* Oreja derecha */}
+      <mesh position={[0.25, 0.65, 0]} rotation={[0, 0, 0.3]}>
+        <coneGeometry args={[0.15, 0.4, 16]} />
+        <meshStandardMaterial color="#FF8C42" roughness={0.4} metalness={0.1} />
+      </mesh>
+      {/* Interior oreja derecha */}
+      <mesh position={[0.25, 0.65, 0.05]} rotation={[0, 0, 0.3]}>
+        <coneGeometry args={[0.1, 0.3, 16]} />
+        <meshStandardMaterial color="#FFB380" roughness={0.3} metalness={0.1} />
+      </mesh>
+
+      {/* Brazo izquierdo */}
+      <mesh position={[-0.4, -0.3, 0]} rotation={[0, 0, 0.3]}>
+        <capsuleGeometry args={[0.08, 0.35, 8, 16]} />
+        <meshStandardMaterial color="#FF8C42" roughness={0.4} metalness={0.1} />
+      </mesh>
+
+      {/* Brazo derecho (el que saluda) */}
+      <group ref={rightArmRef} position={[0.4, -0.2, 0]}>
+        <mesh rotation={[0, 0, -0.2]}>
+          <capsuleGeometry args={[0.08, 0.35, 8, 16]} />
+          <meshStandardMaterial color="#FF8C42" roughness={0.4} metalness={0.1} />
+        </mesh>
+        {/* Mano */}
+        <mesh position={[0, -0.25, 0]}>
+          <sphereGeometry args={[0.1, 16, 16]} />
+          <meshStandardMaterial color="#FF8C42" roughness={0.4} metalness={0.1} />
+        </mesh>
+      </group>
+
+      {/* Pierna izquierda */}
+      <mesh position={[-0.15, -0.85, 0]}>
+        <capsuleGeometry args={[0.12, 0.25, 8, 16]} />
+        <meshStandardMaterial color="#FF8C42" roughness={0.4} metalness={0.1} />
+      </mesh>
+
+      {/* Pierna derecha */}
+      <mesh position={[0.15, -0.85, 0]}>
+        <capsuleGeometry args={[0.12, 0.25, 8, 16]} />
+        <meshStandardMaterial color="#FF8C42" roughness={0.4} metalness={0.1} />
+      </mesh>
+
+      {/* Cola */}
+      <mesh position={[0, -0.3, -0.35]} rotation={[0.5, 0, 0]}>
+        <sphereGeometry args={[0.25, 32, 32]} />
+        <meshStandardMaterial color="#FF8C42" roughness={0.4} metalness={0.1} />
+      </mesh>
+      <mesh position={[0, -0.15, -0.55]} rotation={[0.3, 0, 0]}>
+        <sphereGeometry args={[0.18, 32, 32]} />
+        <meshStandardMaterial color="#FFF5E6" roughness={0.3} metalness={0.1} />
+      </mesh>
+    </group>
   );
 };
 
