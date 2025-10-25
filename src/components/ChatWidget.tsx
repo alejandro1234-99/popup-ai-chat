@@ -1,11 +1,12 @@
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import ChatWindow from "./ChatWindow";
 import auraAvatar from "@/assets/aura-avatar.png";
 
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  return (
+  return createPortal(
     <>
       {!isOpen && (
         <button
@@ -33,7 +34,8 @@ const ChatWidget = () => {
         </button>
       )}
       {isOpen && <ChatWindow onClose={() => setIsOpen(false)} />}
-    </>
+    </>,
+    document.body
   );
 };
 
