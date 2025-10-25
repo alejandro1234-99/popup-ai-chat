@@ -154,8 +154,8 @@ const ChatWindow = ({ onClose }: ChatWindowProps) => {
       {/* Header */}
       <div className="bg-gradient-to-r from-[#1E3A8A]/40 to-[#2563EB]/30 backdrop-blur-sm text-white p-5 flex items-center justify-between border-b border-[#3B82F6]/20">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(96,165,250,0.4)]">
-            <span className="text-lg font-bold">A</span>
+          <div className="w-10 h-10 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(96,165,250,0.4)] overflow-hidden" style={{ background: 'radial-gradient(circle at center, #1e293b 0%, #0f172a 100%)' }}>
+            <img src={auraAvatar} alt="AURA" className="w-[110%] h-[110%] object-contain" />
           </div>
           <div>
             <h3 className="font-semibold text-base text-[#E0E7FF]">AURA</h3>
