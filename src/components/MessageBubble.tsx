@@ -41,11 +41,11 @@ const ProductCarousel = ({ items }: { items: any[] }) => {
   };
 
   return (
-    <div className="relative group">
+    <div className="relative">
       {showLeftArrow && (
         <button
           onClick={() => scroll('left')}
-          className="absolute -left-4 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-white/8 backdrop-blur-sm border border-white/15 text-white/70 hover:bg-white/15 hover:text-white transition-all duration-200 flex items-center justify-center shadow-[0_0_10px_rgba(0,0,0,0.3)]"
+          className="absolute left-0 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-white/8 backdrop-blur-sm border border-white/15 text-white/70 hover:bg-white/15 hover:text-white transition-all duration-200 flex items-center justify-center shadow-[0_0_10px_rgba(0,0,0,0.3)]"
           aria-label="Anterior"
         >
           <ChevronLeft className="h-5 w-5" />
@@ -54,7 +54,7 @@ const ProductCarousel = ({ items }: { items: any[] }) => {
       
       <div 
         ref={scrollRef}
-        className="flex overflow-x-auto gap-4 pb-3 scrollbar-hide snap-x snap-mandatory max-w-full px-1"
+        className="flex overflow-x-auto gap-4 pb-3 scrollbar-hide snap-x snap-mandatory"
         style={{ scrollBehavior: 'smooth' }}
       >
         {items.map((item: any, idx: number) => {
@@ -69,7 +69,7 @@ const ProductCarousel = ({ items }: { items: any[] }) => {
       {showRightArrow && (
         <button
           onClick={() => scroll('right')}
-          className="absolute -right-4 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-white/8 backdrop-blur-sm border border-white/15 text-white/70 hover:bg-white/15 hover:text-white transition-all duration-200 flex items-center justify-center shadow-[0_0_10px_rgba(0,0,0,0.3)]"
+          className="absolute right-0 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-white/8 backdrop-blur-sm border border-white/15 text-white/70 hover:bg-white/15 hover:text-white transition-all duration-200 flex items-center justify-center shadow-[0_0_10px_rgba(0,0,0,0.3)]"
           aria-label="Siguiente"
         >
           <ChevronRight className="h-5 w-5" />
