@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import ProductCard from "./ProductCard";
-import auraAvatar from "@/assets/aura-avatar-premium.png";
+import auraAvatar from "@/assets/aura-avatar-clean.png";
 
 type Message = {
   role: "user" | "assistant";

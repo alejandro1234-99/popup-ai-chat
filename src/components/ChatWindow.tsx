@@ -4,7 +4,7 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import MessageBubble from "./MessageBubble";
 import { useToast } from "@/hooks/use-toast";
-import auraAvatar from "@/assets/aura-avatar-premium.png";
+import auraAvatar from "@/assets/aura-avatar-clean.png";
 
 type Message = {
   role: "user" | "assistant";

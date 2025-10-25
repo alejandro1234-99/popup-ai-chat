@@ -157,23 +157,29 @@ All colors MUST be HSL.
     animation: float 4s ease-in-out infinite;
   }
 
-  /* Gentle wave animation - subtle hand wave without rotating the whole image */
+  /* Gentle wave animation - only simulates hand waving, very subtle */
   @keyframes gentleWave {
-    0%, 100% { 
-      transform: translateX(0px) translateY(0px); 
+    0% { 
+      transform: translateX(0px) rotate(0deg); 
     }
-    25% { 
-      transform: translateX(2px) translateY(-2px); 
+    3% { 
+      transform: translateX(1px) rotate(2deg); 
     }
-    50% { 
-      transform: translateX(-2px) translateY(2px); 
+    6% { 
+      transform: translateX(-1px) rotate(-2deg); 
     }
-    75% { 
-      transform: translateX(2px) translateY(-1px); 
+    9% { 
+      transform: translateX(1px) rotate(2deg); 
+    }
+    12% { 
+      transform: translateX(0px) rotate(0deg); 
+    }
+    100% { 
+      transform: translateX(0px) rotate(0deg); 
     }
   }
 
   .animate-gentle-wave {
-    animation: gentleWave 3s ease-in-out infinite;
+    animation: gentleWave 8s ease-in-out infinite;
   }
 }
