@@ -74,12 +74,34 @@ const Index = () => {
             </Button>
           </div>
 
-          <div className="mt-8 pt-8 border-t border-border">
-            <p className="text-xs text-muted-foreground mb-3">
+          <div className="mt-8 pt-8 border-t border-border space-y-4">
+            <div className="bg-destructive/10 border border-destructive/20 rounded-xl p-4 text-left">
+              <h3 className="font-semibold text-destructive mb-2 flex items-center gap-2">
+                <span>⚠️</span>
+                Configuración requerida en n8n
+              </h3>
+              <p className="text-sm text-muted-foreground mb-3">
+                Para que el webhook funcione correctamente, debes habilitar CORS en n8n:
+              </p>
+              <ol className="text-xs text-muted-foreground space-y-2 list-decimal list-inside">
+                <li>En n8n, ve al nodo <strong>Webhook</strong></li>
+                <li>En "Options" → "Response Headers", agrega:</li>
+              </ol>
+              <div className="bg-muted/50 rounded-lg p-3 mt-3 font-mono text-xs">
+                <div>Access-Control-Allow-Origin: *</div>
+                <div>Access-Control-Allow-Methods: POST, OPTIONS</div>
+                <div>Access-Control-Allow-Headers: Content-Type</div>
+              </div>
+              <p className="text-xs text-muted-foreground mt-3">
+                O usa un nodo "Set Headers" después del webhook para agregar estos headers.
+              </p>
+            </div>
+            
+            <p className="text-xs text-muted-foreground">
               💡 <strong>Prueba el chat ahora:</strong> Haz clic en el botón flotante en la esquina inferior derecha
             </p>
             <p className="text-xs text-muted-foreground">
-              El widget envía mensajes a: <code className="bg-muted px-2 py-1 rounded">https://ibfnlxoh.rpcd.host/webhook/...</code>
+              El widget envía mensajes a: <code className="bg-muted px-2 py-1 rounded text-[10px]">https://ibfnlxoh.rpcd.host/webhook/...</code>
             </p>
           </div>
         </div>

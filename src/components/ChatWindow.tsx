@@ -40,6 +40,9 @@ const ChatWindow = ({ onClose }: ChatWindowProps) => {
     setIsLoading(true);
 
     try {
+      console.log("Sending message to n8n webhook:", userMessage.content);
+      console.log("Webhook URL:", N8N_WEBHOOK_URL);
+      
       const response = await fetch(N8N_WEBHOOK_URL, {
         method: "POST",
         headers: {
@@ -48,11 +51,16 @@ const ChatWindow = ({ onClose }: ChatWindowProps) => {
         body: JSON.stringify({ message: userMessage.content }),
       });
 
+      console.log("Response status:", response.status);
+      console.log("Response headers:", response.headers);
+
       if (!response.ok) {
-        throw new Error("Webhook request failed");
+        console.error("Webhook responded with error:", response.status, response.statusText);
+        throw new Error(`Webhook error: ${response.status}`);
       }
 
       const data = await response.json();
+      console.log("Received data from webhook:", data);
       
       let assistantContent: string;
       
@@ -73,18 +81,36 @@ const ChatWindow = ({ onClose }: ChatWindowProps) => {
       ]);
     } catch (error) {
       console.error("Chat error:", error);
-      toast({
-        title: "Error",
-        description: "Ups, hubo un error. Inténtalo de nuevo.",
-        variant: "destructive",
-      });
+      
+      let errorMessage = "Ups, hubo un error. ";
+      
+      if (error instanceof TypeError && error.message === "Failed to fetch") {
+        errorMessage += "No se puede conectar al webhook. Verifica que:\n\n" +
+          "1. El webhook de n8n esté activo\n" +
+          "2. CORS esté habilitado en n8n\n" +
+          "3. La URL sea correcta";
+        
+        toast({
+          title: "Error de conexión",
+          description: "El webhook no responde. Verifica la configuración de CORS en n8n.",
+          variant: "destructive",
+        });
+      } else {
+        errorMessage += "Inténtalo de nuevo.";
+        
+        toast({
+          title: "Error",
+          description: errorMessage,
+          variant: "destructive",
+        });
+      }
       
       // Mostrar mensaje de error en el chat
       setMessages((prev) => [
         ...prev,
         { 
           role: "assistant", 
-          content: "Ups, hubo un error. Inténtalo de nuevo." 
+          content: errorMessage
         },
       ]);
     } finally {
