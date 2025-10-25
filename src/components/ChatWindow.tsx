@@ -175,8 +175,8 @@ const ChatWindow = ({ onClose }: ChatWindowProps) => {
       <div className="flex-1 overflow-y-auto overflow-x-hidden p-5 space-y-4 bg-gradient-to-b from-[#111827]/50 to-[#0F172A]/50">
         {messages.length === 0 && (
           <div className="text-center text-[#9CA3AF] py-12">
-            <div className="w-20 h-20 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-[0_0_20px_rgba(96,165,250,0.3)] overflow-hidden p-1" style={{ background: 'radial-gradient(circle at center, #1e293b 0%, #0f172a 100%)' }}>
-              <img src={auraAvatar} alt="AURA" className="w-full h-full object-contain" />
+            <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 shadow-[0_0_20px_rgba(96,165,250,0.3)] overflow-hidden" style={{ background: 'radial-gradient(circle at center, #1e293b 0%, #0f172a 100%)' }}>
+              <img src={auraAvatar} alt="AURA" className="w-[110%] h-[110%] object-contain" />
             </div>
             <p className="text-base font-medium text-[#E0E7FF] mb-2">Hola 👋 soy AURA</p>
             <p className="text-sm text-[#93C5FD]">Tu asistente inteligente</p>
@@ -188,8 +188,8 @@ const ChatWindow = ({ onClose }: ChatWindowProps) => {
         ))}
         {isLoading && messages[messages.length - 1]?.role === "user" && (
           <div className="flex gap-3 items-start animate-fade-in">
-            <div className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 shadow-[0_0_15px_rgba(96,165,250,0.3)] overflow-hidden p-1" style={{ background: 'radial-gradient(circle at center, #1e293b 0%, #0f172a 100%)' }}>
-              <img src={auraAvatar} alt="AURA" className="w-full h-full object-contain" />
+            <div className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 shadow-[0_0_15px_rgba(96,165,250,0.3)] overflow-hidden" style={{ background: 'radial-gradient(circle at center, #1e293b 0%, #0f172a 100%)' }}>
+              <img src={auraAvatar} alt="AURA" className="w-[110%] h-[110%] object-contain" />
             </div>
             <div className="bg-gradient-to-r from-[#1E3A8A]/20 to-[#2563EB]/10 border border-[#3B82F6]/40 rounded-2xl rounded-tl-sm px-4 py-3">
               <div className="flex gap-1.5">
