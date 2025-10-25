@@ -172,7 +172,7 @@ const ChatWindow = ({ onClose }: ChatWindowProps) => {
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto overflow-x-hidden p-5 space-y-4 bg-gradient-to-b from-[#111827]/50 to-[#0F172A]/50">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide p-5 space-y-4 bg-gradient-to-b from-[#111827]/50 to-[#0F172A]/50">
         {messages.length === 0 && (
           <div className="text-center text-[#9CA3AF] py-12">
             <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 shadow-[0_0_20px_rgba(96,165,250,0.3)] overflow-hidden" style={{ background: 'radial-gradient(circle at center, #1e293b 0%, #0f172a 100%)' }}>
