@@ -160,26 +160,27 @@ All colors MUST be HSL.
   /* Gentle wave animation - only simulates hand waving, very subtle */
   @keyframes gentleWave {
     0% { 
-      transform: translateX(0px) rotate(0deg); 
+      transform: rotate(0deg); 
     }
-    3% { 
-      transform: translateX(1px) rotate(2deg); 
+    2% { 
+      transform: rotate(3deg); 
+    }
+    4% { 
+      transform: rotate(-3deg); 
     }
     6% { 
-      transform: translateX(-1px) rotate(-2deg); 
+      transform: rotate(3deg); 
     }
-    9% { 
-      transform: translateX(1px) rotate(2deg); 
-    }
-    12% { 
-      transform: translateX(0px) rotate(0deg); 
+    8% { 
+      transform: rotate(0deg); 
     }
     100% { 
-      transform: translateX(0px) rotate(0deg); 
+      transform: rotate(0deg); 
     }
   }
 
   .animate-gentle-wave {
-    animation: gentleWave 8s ease-in-out infinite;
+    animation: gentleWave 6s ease-in-out infinite;
+    transform-origin: 70% 70%;
   }
 }
