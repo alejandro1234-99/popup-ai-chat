@@ -409,8 +409,8 @@ const Aura3DCharacter = ({ onClick }: Character3DProps) => {
             isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
           }`}
         >
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
-            Hola, soy AURA 👋
+          <div className="bg-gradient-to-r from-orange-500 to-amber-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
+            ¡Hola! Soy Zuno 🦊
           </div>
         </div>
 
