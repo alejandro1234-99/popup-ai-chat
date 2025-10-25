@@ -149,21 +149,21 @@ const ChatWindow = ({ onClose }: ChatWindowProps) => {
   };
 
   return (
-    <div className="fixed bottom-24 right-6 z-40 w-[400px] h-[600px] bg-white rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.08)] border border-gray-100 flex flex-col overflow-hidden animate-scale-in">
+    <div className="fixed bottom-24 right-6 z-40 w-[420px] h-[650px] bg-gradient-to-b from-[#0F172A] to-[#1E293B] rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.4)] border border-[#1F2937] flex flex-col overflow-hidden animate-scale-in backdrop-blur-md">
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-blue-500 text-white p-5 flex items-center justify-between">
+      <div className="bg-gradient-to-r from-[#1E3A8A]/40 to-[#2563EB]/30 backdrop-blur-sm text-white p-5 flex items-center justify-between border-b border-[#3B82F6]/20">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+          <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(96,165,250,0.4)]">
             <span className="text-lg font-bold">A</span>
           </div>
           <div>
-            <h3 className="font-semibold text-base">AURA</h3>
-            <p className="text-xs text-blue-100">Asistente Universal de Recomendaciones</p>
+            <h3 className="font-semibold text-base text-[#E0E7FF]">AURA</h3>
+            <p className="text-xs text-[#93C5FD]">Asistente Universal de Recomendaciones</p>
           </div>
         </div>
         <button
           onClick={onClose}
-          className="hover:bg-white/10 rounded-full p-2 transition-colors"
+          className="hover:bg-white/10 rounded-full p-2 transition-colors backdrop-blur-sm"
           aria-label="Cerrar chat"
         >
           <X className="h-5 w-5" />
@@ -171,29 +171,30 @@ const ChatWindow = ({ onClose }: ChatWindowProps) => {
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-gray-50">
+      <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-gradient-to-b from-[#111827]/50 to-[#0F172A]/50">
         {messages.length === 0 && (
-          <div className="text-center text-gray-500 py-12">
-            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-2xl font-bold text-blue-600">A</span>
+          <div className="text-center text-[#9CA3AF] py-12">
+            <div className="w-20 h-20 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-[0_0_20px_rgba(96,165,250,0.3)]">
+              <span className="text-3xl font-bold text-white">A</span>
             </div>
-            <p className="text-sm font-medium text-gray-700 mb-1">¡Hola! Soy AURA</p>
-            <p className="text-xs text-gray-500">¿En qué puedo ayudarte hoy?</p>
+            <p className="text-base font-medium text-[#E0E7FF] mb-2">Hola 👋 soy AURA</p>
+            <p className="text-sm text-[#93C5FD]">Tu asistente inteligente</p>
+            <p className="text-xs text-[#6B7280] mt-2">¿Quieres que te recomiende algo ahora?</p>
           </div>
         )}
         {messages.map((msg, idx) => (
           <MessageBubble key={idx} message={msg} />
         ))}
         {isLoading && messages[messages.length - 1]?.role === "user" && (
-          <div className="flex gap-3 items-start">
-            <div className="w-9 h-9 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
+          <div className="flex gap-3 items-start animate-fade-in">
+            <div className="w-9 h-9 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center flex-shrink-0 shadow-[0_0_15px_rgba(96,165,250,0.3)]">
               <span className="text-sm text-white font-bold">A</span>
             </div>
-            <div className="bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-2xl rounded-tl-sm px-4 py-3">
+            <div className="bg-gradient-to-r from-[#1E3A8A]/20 to-[#2563EB]/10 border border-[#3B82F6]/40 rounded-2xl rounded-tl-sm px-4 py-3">
               <div className="flex gap-1.5">
-                <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-                <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-                <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                <div className="w-2 h-2 bg-[#60A5FA] rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+                <div className="w-2 h-2 bg-[#60A5FA] rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+                <div className="w-2 h-2 bg-[#60A5FA] rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
               </div>
             </div>
           </div>
@@ -202,7 +203,7 @@ const ChatWindow = ({ onClose }: ChatWindowProps) => {
       </div>
 
       {/* Input */}
-      <div className="p-4 border-t border-gray-200 bg-white">
+      <div className="p-4 border-t border-[#1F2937] bg-[#111827]/80 backdrop-blur-sm">
         <div className="flex gap-2">
           <Input
             value={input}
@@ -210,13 +211,13 @@ const ChatWindow = ({ onClose }: ChatWindowProps) => {
             onKeyPress={handleKeyPress}
             placeholder="Escribe tu mensaje..."
             disabled={isLoading}
-            className="flex-1 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+            className="flex-1 bg-[#1F2937]/60 border-[#374151] text-[#E5E7EB] placeholder:text-[#6B7280] focus:border-[#60A5FA] focus:ring-[#60A5FA]/30 backdrop-blur-sm"
           />
           <Button
             onClick={handleSend}
             disabled={isLoading || !input.trim()}
             size="icon"
-            className="bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
+            className="bg-gradient-to-r from-[#2563EB] to-[#1D4ED8] hover:from-[#1D4ED8] hover:to-[#1E40AF] text-white shadow-[0_0_15px_rgba(37,99,235,0.3)]"
           >
             <Send className="h-4 w-4" />
           </Button>

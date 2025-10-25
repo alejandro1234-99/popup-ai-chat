@@ -45,7 +45,7 @@ const ProductCarousel = ({ items }: { items: any[] }) => {
       {showLeftArrow && (
         <button
           onClick={() => scroll('left')}
-          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm shadow-[0_2px_6px_rgba(0,0,0,0.15)] text-gray-800 hover:bg-blue-600 hover:text-white transition-all duration-200 flex items-center justify-center"
+          className="absolute -left-4 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-white/8 backdrop-blur-sm border border-white/15 text-white/70 hover:bg-white/15 hover:text-white transition-all duration-200 flex items-center justify-center shadow-[0_0_10px_rgba(0,0,0,0.3)]"
           aria-label="Anterior"
         >
           <ChevronLeft className="h-5 w-5" />
@@ -54,7 +54,7 @@ const ProductCarousel = ({ items }: { items: any[] }) => {
       
       <div 
         ref={scrollRef}
-        className="flex overflow-x-auto gap-3 pb-3 scrollbar-hide snap-x snap-mandatory max-w-full px-1"
+        className="flex overflow-x-auto gap-4 pb-3 scrollbar-hide snap-x snap-mandatory max-w-full px-1"
         style={{ scrollBehavior: 'smooth' }}
       >
         {items.map((item: any, idx: number) => {
@@ -69,7 +69,7 @@ const ProductCarousel = ({ items }: { items: any[] }) => {
       {showRightArrow && (
         <button
           onClick={() => scroll('right')}
-          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm shadow-[0_2px_6px_rgba(0,0,0,0.15)] text-gray-800 hover:bg-blue-600 hover:text-white transition-all duration-200 flex items-center justify-center"
+          className="absolute -right-4 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-white/8 backdrop-blur-sm border border-white/15 text-white/70 hover:bg-white/15 hover:text-white transition-all duration-200 flex items-center justify-center shadow-[0_0_10px_rgba(0,0,0,0.3)]"
           aria-label="Siguiente"
         >
           <ChevronRight className="h-5 w-5" />
@@ -123,11 +123,11 @@ const MessageBubble = ({ message }: MessageBubbleProps) => {
   if (isUser) {
     return (
       <div className="flex gap-3 items-start justify-end animate-fade-in">
-        <div className="bg-blue-600 text-white rounded-2xl rounded-tr-sm px-4 py-3 max-w-[75%] shadow-sm">
+        <div className="bg-gradient-to-r from-[#2563EB] to-[#1D4ED8] text-white rounded-2xl rounded-tr-sm px-4 py-3 max-w-[75%] shadow-[0_2px_10px_rgba(37,99,235,0.3)]">
           <p className="text-sm leading-relaxed">{message.content}</p>
         </div>
-        <div className="w-9 h-9 rounded-full bg-gray-300 flex items-center justify-center flex-shrink-0">
-          <span className="text-xs font-semibold text-gray-700">Tú</span>
+        <div className="w-9 h-9 rounded-full bg-[#374151] flex items-center justify-center flex-shrink-0 border border-[#4B5563]">
+          <span className="text-xs font-semibold text-[#E5E7EB]">Tú</span>
         </div>
       </div>
     );
@@ -135,23 +135,23 @@ const MessageBubble = ({ message }: MessageBubbleProps) => {
 
   return (
     <div className="flex gap-3 items-start animate-fade-in">
-      <div className="w-9 h-9 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
+      <div className="w-9 h-9 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center flex-shrink-0 shadow-[0_0_15px_rgba(96,165,250,0.3)]">
         <span className="text-sm text-white font-bold">A</span>
       </div>
       <div className="flex-1 max-w-full">
         {isProductCards ? (
           <div>
-            <div className="text-xs font-medium text-blue-600 mb-2 flex items-center gap-1">
+            <div className="text-xs font-medium text-[#60A5FA] mb-2 flex items-center gap-1">
               AURA 💬
             </div>
             <ProductCarousel items={parsedContent.items} />
           </div>
         ) : (
           <div>
-            <div className="text-xs font-medium text-blue-600 mb-1 flex items-center gap-1">
+            <div className="text-xs font-medium text-[#60A5FA] mb-1 flex items-center gap-1">
               AURA 💬
             </div>
-            <div className="bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 text-gray-800 rounded-2xl rounded-tl-sm px-4 py-3 max-w-[85%] shadow-sm">
+            <div className="bg-gradient-to-r from-[#1E3A8A]/20 to-[#2563EB]/10 border border-[#3B82F6]/40 text-[#E0E7FF] rounded-2xl rounded-tl-sm px-4 py-3 max-w-[85%] shadow-[0_2px_8px_rgba(0,0,0,0.25)]">
               <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
             </div>
           </div>
