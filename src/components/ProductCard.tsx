@@ -12,7 +12,7 @@ interface ProductCardProps {
 
 const ProductCard = ({ product }: ProductCardProps) => {
   return (
-    <div className="w-[260px] flex-shrink-0 snap-start bg-[#1F2937] border border-[#374151] rounded-2xl overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.25)] hover:shadow-[0_4px_16px_rgba(96,165,250,0.2)] transition-all duration-300">
+    <div className="min-w-[270px] max-w-[280px] flex-shrink-0 snap-start bg-[#1F2937] border border-[#374151] rounded-2xl overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.25)] hover:shadow-[0_4px_16px_rgba(96,165,250,0.2)] transition-all duration-300">
       {product.image && (
         <div className="aspect-square overflow-hidden bg-[#111827]">
           <img

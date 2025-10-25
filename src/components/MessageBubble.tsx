@@ -42,20 +42,20 @@ const ProductCarousel = ({ items }: { items: any[] }) => {
   };
 
   return (
-    <div className="relative pr-8">
+    <div className="relative">
       {showLeftArrow && (
         <button
           onClick={() => scroll('left')}
-          className="carousel-arrow absolute left-0 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-white/8 backdrop-blur-sm border border-white/15 text-white/70 hover:bg-[#60A5FA]/15 hover:text-white hover:shadow-[0_0_15px_rgba(96,165,250,0.4)] transition-all duration-300 flex items-center justify-center"
+          className="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-[rgba(37,99,235,0.1)] backdrop-blur-[6px] border border-[rgba(96,165,250,0.3)] text-white/70 hover:bg-[rgba(37,99,235,0.25)] hover:text-white transition-all duration-300 flex items-center justify-center"
           aria-label="Anterior"
         >
-          <ChevronLeft className="h-5 w-5" />
+          <ChevronLeft className="h-4 w-4" />
         </button>
       )}
       
       <div 
         ref={scrollRef}
-        className="flex overflow-x-auto gap-4 pb-3 scrollbar-hide snap-x snap-mandatory pl-10"
+        className="flex overflow-x-auto gap-4 pb-3 scrollbar-hide snap-x snap-mandatory px-3"
         style={{ scrollBehavior: 'smooth' }}
       >
         {items.map((item: any, idx: number) => {
@@ -70,10 +70,10 @@ const ProductCarousel = ({ items }: { items: any[] }) => {
       {showRightArrow && (
         <button
           onClick={() => scroll('right')}
-          className="carousel-arrow absolute right-0 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-white/8 backdrop-blur-sm border border-white/15 text-white/70 hover:bg-[#60A5FA]/15 hover:text-white hover:shadow-[0_0_15px_rgba(96,165,250,0.4)] transition-all duration-300 flex items-center justify-center"
+          className="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-[rgba(37,99,235,0.1)] backdrop-blur-[6px] border border-[rgba(96,165,250,0.3)] text-white/70 hover:bg-[rgba(37,99,235,0.25)] hover:text-white transition-all duration-300 flex items-center justify-center"
           aria-label="Siguiente"
         >
-          <ChevronRight className="h-5 w-5" />
+          <ChevronRight className="h-4 w-4" />
         </button>
       )}
     </div>
