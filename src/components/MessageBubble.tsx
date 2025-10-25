@@ -68,9 +68,9 @@ const MessageBubble = ({ message }: MessageBubbleProps) => {
       <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
         <span className="text-xs text-primary-foreground font-medium">AI</span>
       </div>
-      <div className="flex-1 max-w-[85%]">
+      <div className="flex-1">
         {isProductCards ? (
-          <div className="space-y-3">
+          <div className="flex flex-wrap gap-3">
             {parsedContent.items.map((item: any, idx: number) => {
               // Validate required fields
               if (!item.title || !item.price || !item.url) {
@@ -81,7 +81,7 @@ const MessageBubble = ({ message }: MessageBubbleProps) => {
             })}
           </div>
         ) : (
-          <div className="bg-[hsl(var(--chat-bot-bg))] text-primary-foreground rounded-2xl rounded-tl-sm px-4 py-2">
+          <div className="bg-[hsl(var(--chat-bot-bg))] text-primary-foreground rounded-2xl rounded-tl-sm px-4 py-2 max-w-[85%]">
             <p className="text-sm whitespace-pre-wrap">{message.content}</p>
           </div>
         )}
