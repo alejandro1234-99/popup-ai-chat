@@ -153,11 +153,11 @@ const ChatWindow = ({ onClose }: ChatWindowProps) => {
     <div className="fixed bottom-24 right-6 z-40 w-full max-w-[450px] sm:w-[450px] h-[650px] bg-gradient-to-b from-slate-900/80 to-slate-800/80 rounded-3xl shadow-[0_8px_32px_rgba(0,0,0,0.3),0_0_80px_rgba(255,122,52,0.15)] border border-white/10 flex flex-col overflow-hidden animate-scale-in backdrop-blur-2xl mx-4 sm:mx-0" style={{ overflowX: 'hidden', background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.85) 0%, rgba(30, 41, 59, 0.85) 100%)' }}>
       {/* Header */}
       <div className="bg-gradient-to-r from-orange-500/10 to-amber-500/10 backdrop-blur-xl text-white p-5 flex items-center justify-between border-b border-white/10 shadow-[0_1px_20px_rgba(255,122,52,0.1)]">
-        <div className="flex items-center gap-0.5">
-          <div className="w-16 h-16 flex items-center justify-center">
+        <div className="flex items-center gap-0">
+          <div className="w-16 h-16 flex items-center justify-center -mr-1">
             <ZunoEmojiAvatar size={64} />
           </div>
-          <div>
+          <div className="leading-tight">
             <h3 className="font-semibold text-base text-white/95 tracking-wide">Zuno</h3>
             <p className="text-xs text-orange-200/70 font-light">Tu asistente inteligente</p>
           </div>

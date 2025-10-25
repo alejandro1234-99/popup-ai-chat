@@ -117,19 +117,19 @@ const MessageBubble = ({
   return <div className="flex gap-3 items-start animate-fade-in">
       <div className="flex-1 max-w-full">
         {isProductCards ? <div className="flex flex-col">
-            <div className="flex items-center gap-0.5 mb-2">
-              <div className="w-11 h-11 flex items-center justify-center">
+            <div className="flex items-center gap-0 mb-2">
+              <div className="w-11 h-11 flex items-center justify-center -mr-0.5">
                 <ZunoEmojiAvatar size={44} />
               </div>
-              <span className="text-sm font-semibold text-white/90">Zuno</span>
+              <span className="text-sm font-semibold text-white/90 leading-tight">Zuno</span>
             </div>
             <ProductCarousel items={parsedContent.items} />
           </div> : <div className="flex flex-col">
-            <div className="flex items-center gap-0.5 mb-2">
-              <div className="w-11 h-11 flex items-center justify-center">
+            <div className="flex items-center gap-0 mb-2">
+              <div className="w-11 h-11 flex items-center justify-center -mr-0.5">
                 <ZunoEmojiAvatar size={44} />
               </div>
-              <span className="text-sm font-semibold text-white/90 px-px py-0 my-0 mx-0">Zuno</span>
+              <span className="text-sm font-semibold text-white/90 leading-tight">Zuno</span>
             </div>
             <div className="bg-gradient-to-r from-[#1E3A8A]/20 to-[#2563EB]/10 border border-[#3B82F6]/40 text-[#E0E7FF] rounded-2xl rounded-tl-sm px-4 py-3 max-w-[85%] shadow-[0_2px_8px_rgba(0,0,0,0.25)]">
               <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
