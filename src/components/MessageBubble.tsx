@@ -36,7 +36,8 @@ const ProductCarousel = ({ items }: { items: any[] }) => {
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
-      const scrollAmount = direction === 'left' ? -250 : 250;
+      const cardWidth = 250; // ancho aproximado de tarjeta + gap
+      const scrollAmount = direction === 'left' ? -cardWidth : cardWidth;
       scrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
   };
@@ -55,8 +56,13 @@ const ProductCarousel = ({ items }: { items: any[] }) => {
       
       <div 
         ref={scrollRef}
-        className="flex overflow-x-auto gap-4 pb-3 scrollbar-hide snap-x snap-mandatory px-3"
-        style={{ scrollBehavior: 'smooth' }}
+        className="flex overflow-x-auto gap-4 pb-3 scrollbar-hide px-3"
+        style={{ 
+          scrollBehavior: 'smooth',
+          WebkitOverflowScrolling: 'touch',
+          scrollPaddingLeft: '12px',
+          scrollPaddingRight: '12px'
+        }}
       >
         {items.map((item: any, idx: number) => {
           if (!item.title || !item.price || !item.url) {
