@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  const N8N_WEBHOOK_URL = "https://ibfnlxoh.rpcd.host/webhook/6ebd7539-e550-4b2b-87e9-93a753ffbc76";
+  const WEBHOOK_URL = "https://hook.eu2.make.com/w54qg7nwtelumvreln44ieb1ide6i2ge";
   
   // Evitar múltiples inicializaciones
   if (window.chatWidgetInitialized) return;
@@ -565,7 +565,7 @@
     renderMessages();
 
     try {
-      const response = await fetch(N8N_WEBHOOK_URL, {
+      const response = await fetch(WEBHOOK_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

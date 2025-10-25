@@ -14,7 +14,7 @@ interface ChatWindowProps {
   onClose: () => void;
 }
 
-const N8N_WEBHOOK_URL = "https://ibfnlxoh.rpcd.host/webhook/6ebd7539-e550-4b2b-87e9-93a753ffbc76";
+const WEBHOOK_URL = "https://hook.eu2.make.com/w54qg7nwtelumvreln44ieb1ide6i2ge";
 
 const ChatWindow = ({ onClose }: ChatWindowProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -40,10 +40,10 @@ const ChatWindow = ({ onClose }: ChatWindowProps) => {
     setIsLoading(true);
 
     try {
-      console.log("Sending message to n8n webhook:", userMessage.content);
-      console.log("Webhook URL:", N8N_WEBHOOK_URL);
+      console.log("Sending message to Make webhook:", userMessage.content);
+      console.log("Webhook URL:", WEBHOOK_URL);
       
-      const response = await fetch(N8N_WEBHOOK_URL, {
+      const response = await fetch(WEBHOOK_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -86,13 +86,13 @@ const ChatWindow = ({ onClose }: ChatWindowProps) => {
       
       if (error instanceof TypeError && error.message === "Failed to fetch") {
         errorMessage += "No se puede conectar al webhook. Verifica que:\n\n" +
-          "1. El webhook de n8n esté activo\n" +
-          "2. CORS esté habilitado en n8n\n" +
-          "3. La URL sea correcta";
+          "1. El webhook de Make esté activo\n" +
+          "2. La URL sea correcta\n" +
+          "3. El escenario esté ejecutándose";
         
         toast({
           title: "Error de conexión",
-          description: "El webhook no responde. Verifica la configuración de CORS en n8n.",
+          description: "El webhook no responde. Verifica que el escenario de Make esté activo.",
           variant: "destructive",
         });
       } else {
