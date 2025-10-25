@@ -47,37 +47,50 @@ const ChatWindow = ({ onClose }: ChatWindowProps) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Accept": "application/json",
         },
         body: JSON.stringify({ message: userMessage.content }),
       });
 
       console.log("Response status:", response.status);
-      console.log("Response headers:", response.headers);
 
       if (!response.ok) {
         console.error("Webhook responded with error:", response.status, response.statusText);
         throw new Error(`Webhook error: ${response.status}`);
       }
 
-      const data = await response.json();
-      console.log("Received data from webhook:", data);
+      // Get response as text first to handle potential formatting issues
+      const textResponse = await response.text();
+      console.log("Raw response text:", textResponse);
+      
+      // Try to parse the JSON manually
+      let data: any;
+      try {
+        // Clean the response - extract only the JSON part
+        const jsonMatch = textResponse.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          data = JSON.parse(jsonMatch[0]);
+        } else {
+          data = JSON.parse(textResponse);
+        }
+      } catch (parseError) {
+        console.error("JSON parse error:", parseError);
+        throw new Error("La respuesta no es un JSON válido");
+      }
+
+      console.log("Parsed data:", data);
       
       let assistantContent: string;
       
       if (data.type === "text") {
-        // Respuesta de texto simple
-        assistantContent = data.content;
-      } else if (data.type === "product_cards" && Array.isArray(data.items)) {
-        // Respuesta con tarjetas de producto - guardamos el JSON completo
-        // Validar que items tenga al menos un producto
-        if (data.items.length > 0) {
-          assistantContent = JSON.stringify(data);
-        } else {
-          assistantContent = "No se encontraron productos.";
-        }
+        // Simple text response
+        assistantContent = data.content || "";
+      } else if (data.type === "product_cards" && Array.isArray(data.items) && data.items.length > 0) {
+        // Product cards response - store complete JSON
+        assistantContent = JSON.stringify(data);
       } else {
-        // Formato desconocido, tratamos como texto
-        assistantContent = typeof data === "string" ? data : JSON.stringify(data);
+        // Unknown format, treat as text
+        assistantContent = typeof data === "string" ? data : (data.content || JSON.stringify(data));
       }
 
       setMessages((prev) => [
@@ -87,22 +100,27 @@ const ChatWindow = ({ onClose }: ChatWindowProps) => {
     } catch (error) {
       console.error("Chat error:", error);
       
-      let errorMessage = "Ups, hubo un error. ";
+      let errorMessage = "Ups, hubo un error al procesar la respuesta.";
       
       if (error instanceof TypeError && error.message === "Failed to fetch") {
-        errorMessage += "No se puede conectar al webhook. Verifica que:\n\n" +
+        errorMessage = "No se puede conectar al webhook. Verifica que:\n\n" +
           "1. El webhook de Make esté activo\n" +
-          "2. La URL sea correcta\n" +
-          "3. El escenario esté ejecutándose";
+          "2. El escenario esté ejecutándose";
         
         toast({
           title: "Error de conexión",
-          description: "El webhook no responde. Verifica que el escenario de Make esté activo.",
+          description: "El webhook no responde. Verifica el escenario de Make.",
+          variant: "destructive",
+        });
+      } else if (error instanceof Error && error.message.includes("JSON")) {
+        errorMessage = "Error al procesar la respuesta del servidor.";
+        
+        toast({
+          title: "Error de formato",
+          description: "La respuesta del webhook no tiene el formato esperado.",
           variant: "destructive",
         });
       } else {
-        errorMessage += "Inténtalo de nuevo.";
-        
         toast({
           title: "Error",
           description: errorMessage,
@@ -110,7 +128,7 @@ const ChatWindow = ({ onClose }: ChatWindowProps) => {
         });
       }
       
-      // Mostrar mensaje de error en el chat
+      // Show error message in chat
       setMessages((prev) => [
         ...prev,
         { 
