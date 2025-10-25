@@ -101,225 +101,229 @@ const AuraFoxModel = ({ isWaving, onHover }: { isWaving: boolean; onHover: (hove
     >
       {/* Grupo de la cabeza - permite rotaciones independientes */}
       <group ref={headRef} position={[0, 0, 0]}>
-      {/* Cabeza principal - esfera grande estilo emoji */}
+      {/* Cabeza principal - esfera grande estilo emoji 🦊 */}
       <mesh position={[0, 0, 0]}>
-        <sphereGeometry args={[0.65, 64, 64]} />
+        <sphereGeometry args={[0.68, 64, 64]} />
+        <meshStandardMaterial 
+          color="#FF7A34" 
+          roughness={0.35} 
+          metalness={0.12}
+          emissive="#FF6B28"
+          emissiveIntensity={0.12}
+        />
+      </mesh>
+
+      {/* Marcas blancas en las mejillas - estilo emoji 🦊 */}
+      <mesh position={[-0.38, -0.1, 0.48]}>
+        <sphereGeometry args={[0.2, 32, 32]} />
+        <meshStandardMaterial 
+          color="#FFFBF0" 
+          roughness={0.45} 
+          metalness={0.06}
+          emissive="#FFFBF0"
+          emissiveIntensity={0.08}
+        />
+      </mesh>
+      <mesh position={[0.38, -0.1, 0.48]}>
+        <sphereGeometry args={[0.2, 32, 32]} />
+        <meshStandardMaterial 
+          color="#FFFBF0" 
+          roughness={0.45} 
+          metalness={0.06}
+          emissive="#FFFBF0"
+          emissiveIntensity={0.08}
+        />
+      </mesh>
+
+      {/* Hocico/cara - prominente estilo emoji 🦊 */}
+      <mesh position={[0, -0.18, 0.52]}>
+        <sphereGeometry args={[0.35, 32, 32]} />
+        <meshStandardMaterial 
+          color="#FFFBF0" 
+          roughness={0.4} 
+          metalness={0.06}
+          emissive="#FFFBF0"
+          emissiveIntensity={0.1}
+        />
+      </mesh>
+
+      {/* Nariz pequeña y brillante - estilo emoji 🦊 */}
+      <mesh position={[0, -0.14, 0.85]}>
+        <sphereGeometry args={[0.08, 32, 32]} />
+        <meshStandardMaterial 
+          color="#1A1A1A" 
+          roughness={0.08} 
+          metalness={0.5}
+          emissive="#0a0a0a"
+          emissiveIntensity={0.2}
+        />
+      </mesh>
+
+      {/* Boca sonriente - estilo emoji 🦊 */}
+      <mesh position={[0, -0.32, 0.74]} rotation={[0, 0, 0]}>
+        <torusGeometry args={[0.14, 0.025, 16, 32, Math.PI]} />
+        <meshStandardMaterial 
+          color="#2A2A2A" 
+          roughness={0.5} 
+          metalness={0.15}
+          emissive="#1a1a1a"
+          emissiveIntensity={0.1}
+        />
+      </mesh>
+
+      {/* Ojo izquierdo - grande y expresivo estilo emoji 🦊 */}
+      <group ref={leftEyeRef} position={[-0.24, 0.14, 0.5]}>
+        {/* Blanco del ojo */}
+        <mesh>
+          <sphereGeometry args={[0.19, 32, 32]} />
+          <meshStandardMaterial 
+            color="#FFFFFF" 
+            roughness={0.03} 
+            metalness={0.2}
+            emissive="#FFFFFF"
+            emissiveIntensity={0.12}
+          />
+        </mesh>
+        {/* Pupila */}
+        <mesh position={[0.02, -0.01, 0.17]}>
+          <sphereGeometry args={[0.1, 32, 32]} />
+          <meshStandardMaterial 
+            color="#0A0A0A" 
+            roughness={0.01} 
+            metalness={0.7}
+            emissive="#000000"
+            emissiveIntensity={0.5}
+          />
+        </mesh>
+        {/* Brillo principal */}
+        <mesh position={[0.06, 0.06, 0.23]}>
+          <sphereGeometry args={[0.045, 16, 16]} />
+          <meshStandardMaterial 
+            color="#FFFFFF" 
+            roughness={0} 
+            metalness={1}
+            emissive="#FFFFFF"
+            emissiveIntensity={2}
+          />
+        </mesh>
+        {/* Brillo secundario */}
+        <mesh position={[-0.03, -0.04, 0.22]}>
+          <sphereGeometry args={[0.022, 16, 16]} />
+          <meshStandardMaterial 
+            color="#FFFFFF" 
+            roughness={0} 
+            metalness={1}
+            emissive="#FFFFFF"
+            emissiveIntensity={1.2}
+          />
+        </mesh>
+      </group>
+
+      {/* Ojo derecho - grande y expresivo estilo emoji 🦊 */}
+      <group ref={rightEyeRef} position={[0.24, 0.14, 0.5]}>
+        {/* Blanco del ojo */}
+        <mesh>
+          <sphereGeometry args={[0.19, 32, 32]} />
+          <meshStandardMaterial 
+            color="#FFFFFF" 
+            roughness={0.03} 
+            metalness={0.2}
+            emissive="#FFFFFF"
+            emissiveIntensity={0.12}
+          />
+        </mesh>
+        {/* Pupila */}
+        <mesh position={[-0.02, -0.01, 0.17]}>
+          <sphereGeometry args={[0.1, 32, 32]} />
+          <meshStandardMaterial 
+            color="#0A0A0A" 
+            roughness={0.01} 
+            metalness={0.7}
+            emissive="#000000"
+            emissiveIntensity={0.5}
+          />
+        </mesh>
+        {/* Brillo principal */}
+        <mesh position={[-0.06, 0.06, 0.23]}>
+          <sphereGeometry args={[0.045, 16, 16]} />
+          <meshStandardMaterial 
+            color="#FFFFFF" 
+            roughness={0} 
+            metalness={1}
+            emissive="#FFFFFF"
+            emissiveIntensity={2}
+          />
+        </mesh>
+        {/* Brillo secundario */}
+        <mesh position={[0.03, -0.04, 0.22]}>
+          <sphereGeometry args={[0.022, 16, 16]} />
+          <meshStandardMaterial 
+            color="#FFFFFF" 
+            roughness={0} 
+            metalness={1}
+            emissive="#FFFFFF"
+            emissiveIntensity={1.2}
+          />
+        </mesh>
+      </group>
+
+      {/* Oreja izquierda - triangular estilo emoji 🦊 */}
+      <mesh position={[-0.42, 0.55, -0.08]} rotation={[0.15, 0, -0.25]}>
+        <coneGeometry args={[0.22, 0.6, 32]} />
         <meshStandardMaterial 
           color="#FF7A34" 
           roughness={0.4} 
           metalness={0.15}
           emissive="#FF6B28"
-          emissiveIntensity={0.1}
-        />
-      </mesh>
-
-      {/* Marcas blancas en las mejillas - estilo emoji */}
-      <mesh position={[-0.35, -0.08, 0.45]}>
-        <sphereGeometry args={[0.18, 32, 32]} />
-        <meshStandardMaterial 
-          color="#FFFBF0" 
-          roughness={0.5} 
-          metalness={0.05}
-          emissive="#FFFBF0"
-          emissiveIntensity={0.05}
-        />
-      </mesh>
-      <mesh position={[0.35, -0.08, 0.45]}>
-        <sphereGeometry args={[0.18, 32, 32]} />
-        <meshStandardMaterial 
-          color="#FFFBF0" 
-          roughness={0.5} 
-          metalness={0.05}
-          emissive="#FFFBF0"
-          emissiveIntensity={0.05}
-        />
-      </mesh>
-
-      {/* Hocico/cara - más prominente estilo emoji */}
-      <mesh position={[0, -0.15, 0.5]}>
-        <sphereGeometry args={[0.32, 32, 32]} />
-        <meshStandardMaterial 
-          color="#FFFBF0" 
-          roughness={0.45} 
-          metalness={0.08}
-          emissive="#FFFBF0"
-          emissiveIntensity={0.06}
-        />
-      </mesh>
-
-      {/* Nariz pequeña y brillante - estilo emoji */}
-      <mesh position={[0, -0.12, 0.8]}>
-        <sphereGeometry args={[0.07, 32, 32]} />
-        <meshStandardMaterial 
-          color="#2A2A2A" 
-          roughness={0.1} 
-          metalness={0.4}
-          emissive="#1a1a1a"
-          emissiveIntensity={0.15}
-        />
-      </mesh>
-
-      {/* Boca sonriente sutil */}
-      <mesh position={[0, -0.28, 0.7]} rotation={[0, 0, 0]}>
-        <torusGeometry args={[0.12, 0.02, 16, 32, Math.PI]} />
-        <meshStandardMaterial 
-          color="#3D3D3D" 
-          roughness={0.6} 
-          metalness={0.1}
-        />
-      </mesh>
-
-      {/* Ojo izquierdo - grande y expresivo estilo emoji */}
-      <group ref={leftEyeRef} position={[-0.22, 0.12, 0.48]}>
-        {/* Blanco del ojo */}
-        <mesh>
-          <sphereGeometry args={[0.18, 32, 32]} />
-          <meshStandardMaterial 
-            color="#FFFFFF" 
-            roughness={0.05} 
-            metalness={0.15}
-            emissive="#FFFFFF"
-            emissiveIntensity={0.08}
-          />
-        </mesh>
-        {/* Pupila */}
-        <mesh position={[0.02, 0, 0.16]}>
-          <sphereGeometry args={[0.09, 32, 32]} />
-          <meshStandardMaterial 
-            color="#1A1A1A" 
-            roughness={0.02} 
-            metalness={0.6}
-            emissive="#0a0a0a"
-            emissiveIntensity={0.4}
-          />
-        </mesh>
-        {/* Brillo principal */}
-        <mesh position={[0.05, 0.05, 0.22]}>
-          <sphereGeometry args={[0.04, 16, 16]} />
-          <meshStandardMaterial 
-            color="#FFFFFF" 
-            roughness={0} 
-            metalness={1}
-            emissive="#FFFFFF"
-            emissiveIntensity={1.5}
-          />
-        </mesh>
-        {/* Brillo secundario */}
-        <mesh position={[-0.02, -0.03, 0.21]}>
-          <sphereGeometry args={[0.02, 16, 16]} />
-          <meshStandardMaterial 
-            color="#FFFFFF" 
-            roughness={0} 
-            metalness={1}
-            emissive="#FFFFFF"
-            emissiveIntensity={1}
-          />
-        </mesh>
-      </group>
-
-      {/* Ojo derecho - grande y expresivo estilo emoji */}
-      <group ref={rightEyeRef} position={[0.22, 0.12, 0.48]}>
-        {/* Blanco del ojo */}
-        <mesh>
-          <sphereGeometry args={[0.18, 32, 32]} />
-          <meshStandardMaterial 
-            color="#FFFFFF" 
-            roughness={0.05} 
-            metalness={0.15}
-            emissive="#FFFFFF"
-            emissiveIntensity={0.08}
-          />
-        </mesh>
-        {/* Pupila */}
-        <mesh position={[-0.02, 0, 0.16]}>
-          <sphereGeometry args={[0.09, 32, 32]} />
-          <meshStandardMaterial 
-            color="#1A1A1A" 
-            roughness={0.02} 
-            metalness={0.6}
-            emissive="#0a0a0a"
-            emissiveIntensity={0.4}
-          />
-        </mesh>
-        {/* Brillo principal */}
-        <mesh position={[-0.05, 0.05, 0.22]}>
-          <sphereGeometry args={[0.04, 16, 16]} />
-          <meshStandardMaterial 
-            color="#FFFFFF" 
-            roughness={0} 
-            metalness={1}
-            emissive="#FFFFFF"
-            emissiveIntensity={1.5}
-          />
-        </mesh>
-        {/* Brillo secundario */}
-        <mesh position={[0.02, -0.03, 0.21]}>
-          <sphereGeometry args={[0.02, 16, 16]} />
-          <meshStandardMaterial 
-            color="#FFFFFF" 
-            roughness={0} 
-            metalness={1}
-            emissive="#FFFFFF"
-            emissiveIntensity={1}
-          />
-        </mesh>
-      </group>
-
-      {/* Oreja izquierda - suave y expresiva */}
-      <mesh position={[-0.38, 0.52, -0.05]} rotation={[0.2, 0, -0.3]}>
-        <coneGeometry args={[0.2, 0.55, 32]} />
-        <meshStandardMaterial 
-          color="#FF7A34" 
-          roughness={0.5} 
-          metalness={0.12}
-          emissive="#FF6B28"
-          emissiveIntensity={0.08}
+          emissiveIntensity={0.12}
         />
       </mesh>
       {/* Interior oreja izquierda */}
-      <mesh position={[-0.38, 0.52, 0]} rotation={[0.2, 0, -0.3]}>
-        <coneGeometry args={[0.14, 0.42, 32]} />
+      <mesh position={[-0.42, 0.54, -0.02]} rotation={[0.15, 0, -0.25]}>
+        <coneGeometry args={[0.15, 0.46, 32]} />
         <meshStandardMaterial 
           color="#FFB380" 
-          roughness={0.4} 
-          metalness={0.05}
+          roughness={0.35} 
+          metalness={0.08}
           emissive="#FFB380"
-          emissiveIntensity={0.05}
-        />
-      </mesh>
-
-      {/* Oreja derecha - suave y expresiva */}
-      <mesh position={[0.38, 0.52, -0.05]} rotation={[0.2, 0, 0.3]}>
-        <coneGeometry args={[0.2, 0.55, 32]} />
-        <meshStandardMaterial 
-          color="#FF7A34" 
-          roughness={0.5} 
-          metalness={0.12}
-          emissive="#FF6B28"
           emissiveIntensity={0.08}
         />
       </mesh>
+
+      {/* Oreja derecha - triangular estilo emoji 🦊 */}
+      <mesh position={[0.42, 0.55, -0.08]} rotation={[0.15, 0, 0.25]}>
+        <coneGeometry args={[0.22, 0.6, 32]} />
+        <meshStandardMaterial 
+          color="#FF7A34" 
+          roughness={0.4} 
+          metalness={0.15}
+          emissive="#FF6B28"
+          emissiveIntensity={0.12}
+        />
+      </mesh>
       {/* Interior oreja derecha */}
-      <mesh position={[0.38, 0.52, 0]} rotation={[0.2, 0, 0.3]}>
-        <coneGeometry args={[0.14, 0.42, 32]} />
+      <mesh position={[0.42, 0.54, -0.02]} rotation={[0.15, 0, 0.25]}>
+        <coneGeometry args={[0.15, 0.46, 32]} />
         <meshStandardMaterial 
           color="#FFB380" 
-          roughness={0.4} 
-          metalness={0.05}
+          roughness={0.35} 
+          metalness={0.08}
           emissive="#FFB380"
-          emissiveIntensity={0.05}
+          emissiveIntensity={0.08}
         />
       </mesh>
 
-      {/* Detalles de textura - manchas sutiles en la frente */}
-      <mesh position={[0, 0.35, 0.5]}>
-        <sphereGeometry args={[0.08, 32, 32]} />
+      {/* Detalles de textura - manchas sutiles en la frente estilo emoji 🦊 */}
+      <mesh position={[0, 0.38, 0.54]}>
+        <sphereGeometry args={[0.09, 32, 32]} />
         <meshStandardMaterial 
-          color="#FF8F50" 
-          roughness={0.5} 
-          metalness={0.08}
+          color="#FF9960" 
+          roughness={0.45} 
+          metalness={0.1}
           transparent={true}
-          opacity={0.3}
+          opacity={0.35}
+          emissive="#FF8F50"
+          emissiveIntensity={0.05}
         />
       </mesh>
       
