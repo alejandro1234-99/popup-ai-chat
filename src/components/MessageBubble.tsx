@@ -146,20 +146,20 @@ const MessageBubble = ({ message }: MessageBubbleProps) => {
         {isProductCards ? (
           <div className="flex flex-col">
             <div className="flex items-center gap-2 mb-2">
-              <div className="w-8 h-8 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(255,122,52,0.3)] overflow-hidden bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm border border-orange-500/20">
-                <ZunoEmojiAvatar size={32} />
+              <div className="w-10 h-10 flex items-center justify-center">
+                <ZunoEmojiAvatar size={40} />
               </div>
-              <span className="text-sm font-semibold text-white/90">Zuno 🦊</span>
+              <span className="text-sm font-semibold text-white/90">Zuno</span>
             </div>
             <ProductCarousel items={parsedContent.items} />
           </div>
         ) : (
           <div className="flex flex-col">
             <div className="flex items-center gap-2 mb-2">
-              <div className="w-8 h-8 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(255,122,52,0.3)] overflow-hidden bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm border border-orange-500/20">
-                <ZunoEmojiAvatar size={32} />
+              <div className="w-10 h-10 flex items-center justify-center">
+                <ZunoEmojiAvatar size={40} />
               </div>
-              <span className="text-sm font-semibold text-white/90">Zuno 🦊</span>
+              <span className="text-sm font-semibold text-white/90">Zuno</span>
             </div>
             <div className="bg-gradient-to-r from-[#1E3A8A]/20 to-[#2563EB]/10 border border-[#3B82F6]/40 text-[#E0E7FF] rounded-2xl rounded-tl-sm px-4 py-3 max-w-[85%] shadow-[0_2px_8px_rgba(0,0,0,0.25)]">
               <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
