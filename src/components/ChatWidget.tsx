@@ -1,6 +1,6 @@
 import { useState } from "react";
 import ChatWindow from "./ChatWindow";
-import auraAvatar from "@/assets/aura-avatar.png";
+import auraAvatar from "@/assets/aura-avatar-premium.png";
 
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
