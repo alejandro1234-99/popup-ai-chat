@@ -1,5 +1,4 @@
 import { ShoppingBag, Sparkles } from "lucide-react";
-import ChatWidget from "@/components/ChatWidget";
 
 const Index = () => {
   const products = [
@@ -115,9 +114,6 @@ const Index = () => {
           </div>
         </div>
       </main>
-
-      {/* Chat Widget */}
-      <ChatWidget />
     </div>
   );
 };
