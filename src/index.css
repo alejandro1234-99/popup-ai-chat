@@ -128,4 +128,18 @@ All colors MUST be HSL.
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Carousel arrow glow animation */
+  @keyframes glowPulse {
+    0%, 100% { 
+      box-shadow: 0 0 8px rgba(96,165,250,0.2); 
+    }
+    50% { 
+      box-shadow: 0 0 15px rgba(96,165,250,0.4); 
+    }
+  }
+
+  .carousel-arrow {
+    animation: glowPulse 3s ease-in-out infinite;
+  }
 }

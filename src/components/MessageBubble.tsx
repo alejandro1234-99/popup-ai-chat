@@ -45,7 +45,7 @@ const ProductCarousel = ({ items }: { items: any[] }) => {
       {showLeftArrow && (
         <button
           onClick={() => scroll('left')}
-          className="absolute left-0 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-white/8 backdrop-blur-sm border border-white/15 text-white/70 hover:bg-white/15 hover:text-white transition-all duration-200 flex items-center justify-center shadow-[0_0_10px_rgba(0,0,0,0.3)]"
+          className="carousel-arrow absolute -left-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-white/8 backdrop-blur-sm border border-white/15 text-white/70 hover:bg-[#60A5FA]/15 hover:text-white hover:shadow-[0_0_15px_rgba(96,165,250,0.4)] transition-all duration-300 flex items-center justify-center"
           aria-label="Anterior"
         >
           <ChevronLeft className="h-5 w-5" />
@@ -69,7 +69,7 @@ const ProductCarousel = ({ items }: { items: any[] }) => {
       {showRightArrow && (
         <button
           onClick={() => scroll('right')}
-          className="absolute right-0 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-white/8 backdrop-blur-sm border border-white/15 text-white/70 hover:bg-white/15 hover:text-white transition-all duration-200 flex items-center justify-center shadow-[0_0_10px_rgba(0,0,0,0.3)]"
+          className="carousel-arrow absolute -right-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-white/8 backdrop-blur-sm border border-white/15 text-white/70 hover:bg-[#60A5FA]/15 hover:text-white hover:shadow-[0_0_15px_rgba(96,165,250,0.4)] transition-all duration-300 flex items-center justify-center"
           aria-label="Siguiente"
         >
           <ChevronRight className="h-5 w-5" />
