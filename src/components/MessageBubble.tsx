@@ -12,27 +12,43 @@ interface MessageBubbleProps {
 const MessageBubble = ({ message }: MessageBubbleProps) => {
   const isUser = message.role === "user";
 
-  // Try to parse as product cards JSON with robust error handling
+  // Robust JSON parsing for product cards
   let parsedContent: any = null;
-  try {
-    // Clean the content before parsing (remove potential extra whitespace/characters)
-    const cleanedContent = message.content.trim();
-    parsedContent = JSON.parse(cleanedContent);
-  } catch (e) {
-    // Try to extract JSON if it's embedded in text
+  let isProductCards = false;
+
+  if (!isUser) {
     try {
-      const jsonMatch = message.content.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
-        parsedContent = JSON.parse(jsonMatch[0]);
+      // Try direct parsing first
+      const cleanedContent = message.content.trim();
+      parsedContent = JSON.parse(cleanedContent);
+      
+      // Validate product_cards structure
+      if (
+        parsedContent?.type === "product_cards" && 
+        Array.isArray(parsedContent?.items) && 
+        parsedContent.items.length > 0
+      ) {
+        isProductCards = true;
       }
-    } catch {
-      // Not JSON, treat as regular text
+    } catch (e) {
+      // Try to extract JSON from text
+      try {
+        const jsonMatch = message.content.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          parsedContent = JSON.parse(jsonMatch[0]);
+          if (
+            parsedContent?.type === "product_cards" && 
+            Array.isArray(parsedContent?.items) && 
+            parsedContent.items.length > 0
+          ) {
+            isProductCards = true;
+          }
+        }
+      } catch {
+        // Not product cards JSON, will render as text
+      }
     }
   }
-
-  const isProductCards = parsedContent?.type === "product_cards" && 
-                        Array.isArray(parsedContent?.items) && 
-                        parsedContent.items.length > 0;
 
   if (isUser) {
     return (
@@ -52,12 +68,13 @@ const MessageBubble = ({ message }: MessageBubbleProps) => {
       <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
         <span className="text-xs text-primary-foreground font-medium">AI</span>
       </div>
-      <div className="flex-1 max-w-[80%]">
+      <div className="flex-1 max-w-[85%]">
         {isProductCards ? (
-          <div className="space-y-2">
+          <div className="space-y-3">
             {parsedContent.items.map((item: any, idx: number) => {
-              // Validate that each item has the required fields
+              // Validate required fields
               if (!item.title || !item.price || !item.url) {
+                console.warn("Invalid product item:", item);
                 return null;
               }
               return <ProductCard key={idx} product={item} />;
