@@ -15,7 +15,7 @@ interface ChatWindowProps {
   onClose: () => void;
 }
 
-const WEBHOOK_URL = "https://hook.eu2.make.com/w54qg7nwtelumvreln44ieb1ide6i2ge";
+const WEBHOOK_URL = "https://n8n-n8n.e07dhf.easypanel.host/webhook/c2ee33f4-37d4-49c0-975e-a47e7f0a7e29";
 
 const ChatWindow = ({ onClose }: ChatWindowProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -41,7 +41,7 @@ const ChatWindow = ({ onClose }: ChatWindowProps) => {
     setIsLoading(true);
 
     try {
-      console.log("Sending message to Make webhook:", userMessage.content);
+      console.log("Sending message to n8n webhook:", userMessage.content);
       console.log("Webhook URL:", WEBHOOK_URL);
       
       const response = await fetch(WEBHOOK_URL, {
@@ -105,12 +105,12 @@ const ChatWindow = ({ onClose }: ChatWindowProps) => {
       
       if (error instanceof TypeError && error.message === "Failed to fetch") {
         errorMessage = "No se puede conectar al webhook. Verifica que:\n\n" +
-          "1. El webhook de Make esté activo\n" +
-          "2. El escenario esté ejecutándose";
+          "1. El webhook de n8n esté activo\n" +
+          "2. El workflow esté ejecutándose";
         
         toast({
           title: "Error de conexión",
-          description: "El webhook no responde. Verifica el escenario de Make.",
+          description: "El webhook no responde. Verifica el workflow de n8n.",
           variant: "destructive",
         });
       } else if (error instanceof Error && error.message.includes("JSON")) {
