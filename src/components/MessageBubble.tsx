@@ -68,13 +68,16 @@ const MessageBubble = ({ message }: MessageBubbleProps) => {
       <div className="w-9 h-9 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
         <span className="text-sm text-white font-bold">A</span>
       </div>
-      <div className="flex-1">
+      <div className="flex-1 max-w-full">
         {isProductCards ? (
           <div>
             <div className="text-xs font-medium text-blue-600 mb-2 flex items-center gap-1">
               AURA 💬
             </div>
-            <div className="overflow-x-auto snap-x snap-mandatory scrollbar-hide flex gap-3 pb-2">
+            <div 
+              className="flex overflow-x-auto gap-3 pb-3 scrollbar-hide snap-x snap-mandatory max-w-full"
+              style={{ scrollBehavior: 'smooth' }}
+            >
               {parsedContent.items.map((item: any, idx: number) => {
                 // Validate required fields
                 if (!item.title || !item.price || !item.url) {
