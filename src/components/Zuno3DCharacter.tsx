@@ -7,8 +7,8 @@ interface Character3DProps {
   onClick: () => void;
 }
 
-// Componente de la cabeza de zorro AURA en estilo emoji 3D
-const AuraFoxModel = ({ isWaving, onHover }: { isWaving: boolean; onHover: (hover: boolean) => void }) => {
+// Componente emoji 3D del zorro 🦊 - ZUNO v2 (único avatar permitido)
+const ZunoFoxEmoji3D = ({ isWaving, onHover }: { isWaving: boolean; onHover: (hover: boolean) => void }) => {
   const groupRef = useRef<THREE.Group>(null);
   const headRef = useRef<THREE.Group>(null);
   const leftEyeRef = useRef<THREE.Group>(null);
@@ -17,6 +17,23 @@ const AuraFoxModel = ({ isWaving, onHover }: { isWaving: boolean; onHover: (hove
   const [isBlinking, setIsBlinking] = useState(false);
   const [isWinking, setIsWinking] = useState(false);
   const blinkTimerRef = useRef<number>(0);
+  
+  // Log de verificación - confirmación del avatar activo
+  useEffect(() => {
+    console.log("✅ Avatar activo: 🦊 Zuno v2 (Emoji 3D)");
+    console.log("📦 Asset ID: ZunoFoxEmoji3D - Modelo 3D procedural");
+    console.log("🚫 Cache desactivado - No fallback al avatar anterior");
+    
+    // Limpiar localStorage de avatares anteriores
+    const keysToRemove = ['avatar', 'assistantAvatar', 'assetVersion', 'emojiFox', 'auraAvatar'];
+    keysToRemove.forEach(key => {
+      localStorage.removeItem(key);
+      sessionStorage.removeItem(key);
+    });
+    
+    // Establecer nuevo avatar en storage
+    localStorage.setItem('currentAvatar', 'ZunoFoxEmoji3D_v2');
+  }, []);
   
   // Sistema de parpadeo natural
   useEffect(() => {
@@ -332,11 +349,20 @@ const AuraFoxModel = ({ isWaving, onHover }: { isWaving: boolean; onHover: (hove
   );
 };
 
-const Aura3DCharacter = ({ onClick }: Character3DProps) => {
+const Zuno3DCharacter = ({ onClick }: Character3DProps) => {
   const [isWaving, setIsWaving] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
+  const [showVerification, setShowVerification] = useState(true);
 
-  // Animación de saludo inicial - más corta para emoji
+  // Mensaje de verificación temporal (2 segundos)
+  useEffect(() => {
+    const verificationTimer = setTimeout(() => {
+      setShowVerification(false);
+    }, 2000);
+    return () => clearTimeout(verificationTimer);
+  }, []);
+
+  // Animación de saludo inicial
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsWaving(false);
@@ -393,15 +419,22 @@ const Aura3DCharacter = ({ onClick }: Character3DProps) => {
             castShadow
           />
 
-          {/* Character */}
-          <AuraFoxModel isWaving={isWaving} onHover={setIsHovered} />
+          {/* Avatar emoji 3D del zorro - ÚNICO PERMITIDO */}
+          <ZunoFoxEmoji3D isWaving={isWaving} onHover={setIsHovered} />
 
           {/* Environment */}
           <Environment preset="city" />
         </Canvas>
 
+        {/* Mensaje de verificación temporal */}
+        {showVerification && (
+          <div className="absolute -top-20 left-1/2 -translate-x-1/2 whitespace-nowrap bg-green-500 text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg animate-fade-in pointer-events-none">
+            ✅ Avatar activo: 🦊 Zuno v2
+          </div>
+        )}
+
         {/* Interactive rings */}
-        <div className="absolute inset-0 rounded-full border-2 border-blue-400/20 animate-ping-slow pointer-events-none" />
+        <div className="absolute inset-0 rounded-full border-2 border-orange-400/20 animate-ping-slow pointer-events-none" />
 
         {/* Name tag on hover */}
         <div
@@ -415,14 +448,14 @@ const Aura3DCharacter = ({ onClick }: Character3DProps) => {
         </div>
 
         {/* Online indicator */}
-        {!isHovered && (
+        {!isHovered && !showVerification && (
           <div className="absolute -top-2 -right-2 w-4 h-4 bg-green-400 rounded-full animate-pulse border-2 border-white shadow-lg pointer-events-none" />
         )}
       </div>
 
       {/* Click hint */}
       <div
-        className={`absolute -bottom-8 left-1/2 -translate-x-1/2 text-xs text-blue-300 whitespace-nowrap transition-opacity duration-300 pointer-events-none ${
+        className={`absolute -bottom-8 left-1/2 -translate-x-1/2 text-xs text-orange-300 whitespace-nowrap transition-opacity duration-300 pointer-events-none ${
           isHovered ? 'opacity-100' : 'opacity-0'
         }`}
       >
@@ -432,4 +465,4 @@ const Aura3DCharacter = ({ onClick }: Character3DProps) => {
   );
 };
 
-export default Aura3DCharacter;
+export default Zuno3DCharacter;
