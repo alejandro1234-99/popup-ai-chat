@@ -117,7 +117,7 @@ const MessageBubble = ({
   return <div className="flex gap-3 items-start animate-fade-in">
       <div className="flex-1 max-w-full">
         {isProductCards ? <div className="flex flex-col">
-            <div className="flex items-center gap-1 mb-2">
+            <div className="flex items-center gap-0.5 mb-2">
               <div className="w-11 h-11 flex items-center justify-center">
                 <ZunoEmojiAvatar size={44} />
               </div>
@@ -125,7 +125,7 @@ const MessageBubble = ({
             </div>
             <ProductCarousel items={parsedContent.items} />
           </div> : <div className="flex flex-col">
-            <div className="flex items-center gap-1 mb-2">
+            <div className="flex items-center gap-0.5 mb-2">
               <div className="w-11 h-11 flex items-center justify-center">
                 <ZunoEmojiAvatar size={44} />
               </div>
