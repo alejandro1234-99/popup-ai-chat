@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import ProductCard from "./ProductCard";
 
@@ -13,25 +13,6 @@ interface MessageBubbleProps {
 
 const ProductCarousel = ({ items }: { items: any[] }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [showLeftArrow, setShowLeftArrow] = useState(false);
-  const [showRightArrow, setShowRightArrow] = useState(true);
-
-  const checkScroll = () => {
-    if (scrollRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-      setShowLeftArrow(scrollLeft > 10);
-      setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 10);
-    }
-  };
-
-  useEffect(() => {
-    checkScroll();
-    const scrollElement = scrollRef.current;
-    if (scrollElement) {
-      scrollElement.addEventListener('scroll', checkScroll);
-      return () => scrollElement.removeEventListener('scroll', checkScroll);
-    }
-  }, [items]);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
@@ -40,12 +21,15 @@ const ProductCarousel = ({ items }: { items: any[] }) => {
     }
   };
 
+  // Only show arrows if there are multiple items
+  const showArrows = items.length > 1;
+
   return (
     <div className="relative group">
-      {showLeftArrow && (
+      {showArrows && (
         <button
           onClick={() => scroll('left')}
-          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm shadow-[0_2px_6px_rgba(0,0,0,0.15)] text-gray-800 hover:bg-blue-600 hover:text-white transition-all duration-200 flex items-center justify-center opacity-0 group-hover:opacity-100"
+          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm shadow-[0_2px_6px_rgba(0,0,0,0.15)] text-gray-800 hover:bg-blue-600 hover:text-white transition-all duration-200 flex items-center justify-center"
           aria-label="Anterior"
         >
           <ChevronLeft className="h-5 w-5" />
@@ -66,10 +50,10 @@ const ProductCarousel = ({ items }: { items: any[] }) => {
         })}
       </div>
 
-      {showRightArrow && (
+      {showArrows && (
         <button
           onClick={() => scroll('right')}
-          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm shadow-[0_2px_6px_rgba(0,0,0,0.15)] text-gray-800 hover:bg-blue-600 hover:text-white transition-all duration-200 flex items-center justify-center opacity-0 group-hover:opacity-100"
+          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm shadow-[0_2px_6px_rgba(0,0,0,0.15)] text-gray-800 hover:bg-blue-600 hover:text-white transition-all duration-200 flex items-center justify-center"
           aria-label="Siguiente"
         >
           <ChevronRight className="h-5 w-5" />
