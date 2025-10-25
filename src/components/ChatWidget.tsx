@@ -19,11 +19,18 @@ const ChatWidget = () => {
             right: '24px'
           }}
         >
-          <img 
-            src={auraAvatar} 
-            alt="AURA bot" 
-            className="w-16 h-16 object-contain animate-gentle-wave drop-shadow-[0_0_15px_rgba(96,165,250,0.6)] scale-x-[-1]"
-          />
+          <div 
+            className="absolute inset-0 rounded-full flex items-center justify-center overflow-hidden"
+            style={{
+              background: 'radial-gradient(circle at center, #1e293b 0%, #0f172a 100%)'
+            }}
+          >
+            <img 
+              src={auraAvatar} 
+              alt="AURA bot" 
+              className="w-[85%] h-[85%] object-contain animate-gentle-wave drop-shadow-[0_0_15px_rgba(96,165,250,0.6)] scale-x-[-1]"
+            />
+          </div>
         </button>
       )}
       {isOpen && <ChatWindow onClose={() => setIsOpen(false)} />}
