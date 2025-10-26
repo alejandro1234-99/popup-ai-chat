@@ -1,7 +1,8 @@
 (function() {
   'use strict';
 
-  const WEBHOOK_URL = "https://hook.eu2.make.com/w54qg7nwtelumvreln44ieb1ide6i2ge";
+  const WEBHOOK_URL = "https://n8n-n8n.e07dhf.easypanel.host/webhook/c2ee33f4-37d4-49c0-975e-a47e7f0a7e29";
+  const STORAGE_KEY = "zuno-chat-messages";
   
   // Evitar múltiples inicializaciones
   if (window.chatWidgetInitialized) return;
@@ -23,10 +24,10 @@
       width: 56px;
       height: 56px;
       border-radius: 50%;
-      background: linear-gradient(135deg, hsl(238, 85%, 65%), hsl(250, 85%, 75%));
+      background: linear-gradient(135deg, hsl(25, 95%, 53%), hsl(33, 100%, 60%));
       border: none;
       cursor: pointer;
-      box-shadow: 0 10px 40px -10px rgba(99, 102, 241, 0.3);
+      box-shadow: 0 10px 40px -10px hsla(25, 95%, 53%, 0.4);
       transition: all 0.3s ease;
       display: flex;
       align-items: center;
@@ -35,7 +36,7 @@
 
     .chat-widget-button:hover {
       transform: scale(1.1);
-      box-shadow: 0 10px 50px -5px rgba(99, 102, 241, 0.5);
+      box-shadow: 0 10px 50px -5px hsla(25, 95%, 53%, 0.6);
     }
 
     .chat-widget-button svg {
@@ -51,10 +52,10 @@
       z-index: 9999;
       width: 380px;
       height: 600px;
-      background: white;
+      background: linear-gradient(135deg, hsl(220, 26%, 14%) 0%, hsl(220, 26%, 18%) 100%);
       border-radius: 16px;
-      box-shadow: 0 10px 40px -10px rgba(99, 102, 241, 0.3);
-      border: 1px solid #e5e7eb;
+      box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       display: flex;
       flex-direction: column;
       overflow: hidden;
@@ -73,7 +74,7 @@
     }
 
     .chat-widget-header {
-      background: linear-gradient(135deg, hsl(238, 85%, 65%), hsl(250, 85%, 75%));
+      background: linear-gradient(135deg, hsl(25, 95%, 53%), hsl(33, 100%, 60%));
       color: white;
       padding: 16px;
       display: flex;
@@ -125,7 +126,7 @@
       flex: 1;
       overflow-y: auto;
       padding: 16px;
-      background: #fafafa;
+      background: linear-gradient(135deg, hsl(220, 26%, 14%) 0%, hsl(220, 26%, 18%) 100%);
       display: flex;
       flex-direction: column;
       gap: 16px;
@@ -133,7 +134,7 @@
 
     .chat-widget-empty {
       text-align: center;
-      color: #6b7280;
+      color: rgba(255, 255, 255, 0.7);
       padding: 32px 16px;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       font-size: 14px;
@@ -163,13 +164,13 @@
     }
 
     .chat-avatar.bot {
-      background: hsl(238, 85%, 65%);
-      color: white;
+      background: transparent;
+      font-size: 24px;
     }
 
     .chat-avatar.user {
-      background: hsl(220, 14%, 96%);
-      color: #1f2937;
+      background: linear-gradient(135deg, hsl(25, 95%, 53%), hsl(33, 100%, 60%));
+      color: white;
     }
 
     .chat-bubble {
@@ -183,14 +184,16 @@
     }
 
     .chat-bubble.user {
-      background: hsl(220, 14%, 96%);
-      color: #1f2937;
+      background: linear-gradient(135deg, hsl(25, 95%, 53%), hsl(33, 100%, 60%));
+      color: white;
       border-top-right-radius: 4px;
     }
 
     .chat-bubble.bot {
-      background: hsl(238, 85%, 65%);
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
       color: white;
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-top-left-radius: 4px;
     }
 
@@ -198,7 +201,9 @@
       display: flex;
       gap: 4px;
       padding: 12px 16px;
-      background: hsl(238, 85%, 65%);
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 16px;
       border-top-left-radius: 4px;
       width: fit-content;
@@ -278,12 +283,12 @@
     .chat-product-price {
       font-size: 18px;
       font-weight: 700;
-      color: hsl(238, 85%, 65%);
+      color: hsl(25, 95%, 53%);
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
     .chat-product-button {
-      background: hsl(238, 85%, 65%);
+      background: hsl(25, 95%, 53%);
       color: white;
       border: none;
       padding: 6px 12px;
@@ -299,13 +304,13 @@
     }
 
     .chat-product-button:hover {
-      background: hsl(238, 85%, 60%);
+      background: hsl(25, 95%, 48%);
     }
 
     .chat-widget-input-container {
       padding: 16px;
-      border-top: 1px solid #e5e7eb;
-      background: white;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
       display: flex;
       gap: 8px;
     }
@@ -313,7 +318,9 @@
     .chat-widget-input {
       flex: 1;
       padding: 10px 12px;
-      border: 1px solid #e5e7eb;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
       border-radius: 8px;
       font-size: 14px;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -321,12 +328,16 @@
       transition: border-color 0.2s;
     }
 
+    .chat-widget-input::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
     .chat-widget-input:focus {
-      border-color: hsl(238, 85%, 65%);
+      border-color: hsl(25, 95%, 53%);
     }
 
     .chat-widget-send {
-      background: hsl(238, 85%, 65%);
+      background: linear-gradient(135deg, hsl(25, 95%, 53%), hsl(33, 100%, 60%));
       border: none;
       width: 40px;
       height: 40px;
@@ -339,7 +350,7 @@
     }
 
     .chat-widget-send:hover:not(:disabled) {
-      background: hsl(238, 85%, 60%);
+      background: linear-gradient(135deg, hsl(25, 95%, 48%), hsl(33, 100%, 55%));
     }
 
     .chat-widget-send:disabled {
@@ -378,6 +389,16 @@
   let isLoading = false;
   let messages = [];
 
+  // Cargar mensajes desde localStorage
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      messages = JSON.parse(stored);
+    }
+  } catch (error) {
+    console.error('Error loading messages from localStorage:', error);
+  }
+
   // Crear elementos del DOM
   const container = document.createElement('div');
   container.className = 'chat-widget-container';
@@ -386,9 +407,7 @@
   const button = document.createElement('button');
   button.className = 'chat-widget-button';
   button.innerHTML = `
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-    </svg>
+    <span style="font-size: 28px;">🦊</span>
   `;
 
   // Ventana del chat
@@ -399,7 +418,10 @@
     <div class="chat-widget-header">
       <div class="chat-widget-header-title">
         <div class="chat-widget-status-dot"></div>
-        <span>Asistente IA</span>
+        <div style="display: flex; flex-direction: column; gap: 2px;">
+          <span style="font-weight: 600;">Zuno</span>
+          <span style="font-size: 11px; opacity: 0.9;">Tu asistente inteligente</span>
+        </div>
       </div>
       <button class="chat-widget-close" aria-label="Cerrar chat">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="16" height="16">
@@ -409,7 +431,9 @@
     </div>
     <div class="chat-widget-messages" id="chat-messages">
       <div class="chat-widget-empty">
-        <p>¡Hola! ¿En qué puedo ayudarte hoy?</p>
+        <div style="font-size: 48px; margin-bottom: 8px;">🦊</div>
+        <p style="font-weight: 600; margin-bottom: 4px;">¡Hola! Soy Zuno</p>
+        <p style="font-size: 12px; opacity: 0.8;">Tu asistente inteligente</p>
       </div>
     </div>
     <div class="chat-widget-input-container">
@@ -445,15 +469,13 @@
     if (isOpen) {
       input.focus();
       button.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="24" height="24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
       `;
     } else {
       button.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-        </svg>
+        <span style="font-size: 28px;">🦊</span>
       `;
     }
   }
@@ -465,7 +487,9 @@
     if (messages.length === 0) {
       messagesContainer.innerHTML = `
         <div class="chat-widget-empty">
-          <p>¡Hola! ¿En qué puedo ayudarte hoy?</p>
+          <div style="font-size: 48px; margin-bottom: 8px;">🦊</div>
+          <p style="font-weight: 600; margin-bottom: 4px;">¡Hola! Soy Zuno</p>
+          <p style="font-size: 12px; opacity: 0.8;">Tu asistente inteligente</p>
         </div>
       `;
       return;
@@ -523,7 +547,7 @@
         }
 
         messageDiv.innerHTML = `
-          <div class="chat-avatar bot">AI</div>
+          <div class="chat-avatar bot">🦊</div>
           ${content}
         `;
       }
@@ -557,6 +581,14 @@
 
     // Agregar mensaje del usuario
     messages.push({ role: 'user', content: text });
+    
+    // Guardar mensajes en localStorage
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+    } catch (error) {
+      console.error('Error saving messages to localStorage:', error);
+    }
+    
     input.value = '';
     isLoading = true;
     sendButton.disabled = true;
@@ -590,6 +622,13 @@
       }
 
       messages.push({ role: 'assistant', content: assistantContent });
+      
+      // Guardar mensajes en localStorage
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+      } catch (error) {
+        console.error('Error saving messages to localStorage:', error);
+      }
     } catch (error) {
       console.error('Chat error:', error);
       messages.push({ 
