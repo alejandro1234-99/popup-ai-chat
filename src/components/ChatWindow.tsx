@@ -17,8 +17,18 @@ interface ChatWindowProps {
 
 const WEBHOOK_URL = "https://n8n-n8n.e07dhf.easypanel.host/webhook/c2ee33f4-37d4-49c0-975e-a47e7f0a7e29";
 
+const STORAGE_KEY = "zuno-chat-messages";
+
 const ChatWindow = ({ onClose }: ChatWindowProps) => {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>(() => {
+    // Load messages from localStorage on mount
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  });
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -30,6 +40,15 @@ const ChatWindow = ({ onClose }: ChatWindowProps) => {
 
   useEffect(() => {
     scrollToBottom();
+  }, [messages]);
+
+  // Save messages to localStorage whenever they change
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+    } catch (error) {
+      console.error("Error saving messages to localStorage:", error);
+    }
   }, [messages]);
 
   const handleSend = async () => {
